@@ -1,0 +1,11 @@
+{
+  "tests/test_mancala.py::TestClass::()::test_has_player_2_pots": true,
+  "tests/test_mancala.py::TestClass::()::test_stores": true,
+  "tests/test_mancala.py::TestGameState::()::test_returns_game_state": true,
+  "tests/test_mancala.py::TestMancala::test_gameOver": true,
+  "tests/test_mancala.py::TestMancalaInit::()::test_has_player_1_pots": true,
+  "tests/test_mancala.py::TestMancalaInit::()::test_has_player_2_pots": true,
+  "tests/test_mancala.py::TestMancalaInit::()::test_has_starting_number_of_pots": true,
+  "tests/test_mancala.py::TestMancalaInit::()::test_has_starting_number_of_stones": true,
+  "tests/test_mancala.py::TestMancalaInit::()::test_has_starting_stores": true
+}
