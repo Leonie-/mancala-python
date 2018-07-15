@@ -1,8 +1,7 @@
 [
-  "tests/test_mancala.py::TestMancalaInit::()::test_has_starting_number_of_pots",
-  "tests/test_mancala.py::TestMancalaInit::()::test_has_starting_number_of_stones",
-  "tests/test_mancala.py::TestMancalaInit::()::test_has_starting_stores",
-  "tests/test_mancala.py::TestMancalaInit::()::test_has_player_1_pots",
-  "tests/test_mancala.py::TestMancalaInit::()::test_has_player_2_pots",
-  "tests/test_mancala.py::TestGameState::()::test_returns_game_state"
+  "tests/test_mancala.py::TestInitialGameState::()::test_returns_initial_game_log",
+  "tests/test_mancala.py::TestGamePlay::()::test_throws_error_when_player_number_is_too_high",
+  "tests/test_mancala.py::TestGamePlay::()::test_throws_error_when_player_number_is_too_low",
+  "tests/test_mancala.py::TestGamePlay::()::test_throws_error_when_pot_selected_does_not_exist",
+  "tests/test_mancala.py::TestGamePlay::()::test_updates_game_log_when_player_one_has_taken_a_move_on_pot_3"
 ]
