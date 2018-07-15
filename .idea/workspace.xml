@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="056ec61e-d0d7-490d-b6c1-a74ab3d113f4" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$USER_HOME$/mancala-py/README.md" beforeDir="false" afterPath="$USER_HOME$/mancala-py/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.pytest_cache/v/cache/lastfailed" beforeDir="false" afterPath="$PROJECT_DIR$/.pytest_cache/v/cache/lastfailed" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.pytest_cache/v/cache/nodeids" beforeDir="false" afterPath="$PROJECT_DIR$/.pytest_cache/v/cache/nodeids" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mancala/mancala.py" beforeDir="false" afterPath="$PROJECT_DIR$/mancala/mancala.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_mancala.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_mancala.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -317,12 +311,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="py_test_for_test_mancala_TestGamePlay_test_updates_game_state_when_player_one_has_taken_a_move_on_pot_3 - 2018.07.15 at 15h 30m 24s.xml">
-      <configuration name="py.test for test_mancala.TestGamePlay.test_updates_game_state_when_player_one_has_taken_a_move_on_pot_3" configurationId="tests" />
-    </history-entry>
-    <history-entry file="py_test_for_test_mancala_TestGamePlay_test_updates_game_state_when_player_one_has_taken_a_move_on_pot_3 - 2018.07.15 at 15h 32m 48s.xml">
-      <configuration name="py.test for test_mancala.TestGamePlay.test_updates_game_state_when_player_one_has_taken_a_move_on_pot_3" configurationId="tests" />
-    </history-entry>
     <history-entry file="py_test_for_test_mancala_TestGamePlay_test_updates_game_state_when_player_one_has_taken_a_move_on_pot_3 - 2018.07.15 at 15h 33m 08s.xml">
       <configuration name="py.test for test_mancala.TestGamePlay.test_updates_game_state_when_player_one_has_taken_a_move_on_pot_3" configurationId="tests" />
     </history-entry>
@@ -345,6 +333,12 @@
       <configuration name="py.test in tests" configurationId="tests" />
     </history-entry>
     <history-entry file="py_test_in_tests - 2018.07.15 at 15h 43m 44s.xml">
+      <configuration name="py.test in tests" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_tests - 2018.07.15 at 15h 45m 13s.xml">
+      <configuration name="py.test in tests" configurationId="tests" />
+    </history-entry>
+    <history-entry file="py_test_in_tests - 2018.07.15 at 15h 49m 19s.xml">
       <configuration name="py.test in tests" configurationId="tests" />
     </history-entry>
   </component>
