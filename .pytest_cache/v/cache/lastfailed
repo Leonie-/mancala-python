@@ -1,9 +1,0 @@
-{
-  "tests/test_mancala.py::TestClass::()::test_has_player_2_pots": true,
-  "tests/test_mancala.py::TestClass::()::test_stores": true,
-  "tests/test_mancala.py::TestGamePlay::()::test_throws_error_when_player_is_invalid": true,
-  "tests/test_mancala.py::TestGamePlay::()::test_updates_game_log_when_player_one_has_taken_a_move_on_pot_3": true,
-  "tests/test_mancala.py::TestGamePlay::()::test_updates_game_state_when_player_one_has_taken_a_move_on_pot_3": true,
-  "tests/test_mancala.py::TestGameState::()::test_updates_game_state_when_player_one_has_taken_a_move_on_pot_3": true,
-  "tests/test_mancala.py::TestMancala::test_gameOver": true
-}
