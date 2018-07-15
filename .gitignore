@@ -1,4 +1,7 @@
-.pytest_cache
+.idea/
+.pytest_cache/
+tests/__pycache__/
+tests/.pytest_cache/
+__pycache__/
 .DS_Store
-tests/__pycache__
-tests/.pytest_cache
+*.pyc
