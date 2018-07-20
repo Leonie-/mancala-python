@@ -49,3 +49,11 @@ class TestGamePlay:
 
         assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
         assert mancala.game_log[1] == [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]]
+
+    # def test_updates_game_log_when_player_two_has_taken_a_move_on_pot_4(self, mancala):
+    #     player_number = 2
+    #     pot_number = 4
+    #     mancala.play(player_number, pot_number)
+    #
+    #     assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
+    #     assert mancala.game_log[1] == [[5, 4, 4, 4, 4, 4], [4, 4, 4, 0, 5, 5], [0, 1]]

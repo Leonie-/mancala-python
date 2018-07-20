@@ -5,8 +5,12 @@ class Mancala():
     is_new = True
 
     def __init__(self, pots, stones):
-        play_board = [stones] * pots
-        self.game_log = [[play_board, play_board, [0,0]]]
+        # create game log
+        self.game_log = [[
+            [stones] * pots,
+            [stones] * pots,
+            [0,0]
+        ]]
 
     def validate_turn(self, player_number, pot_number):
         if player_number < 0 or player_number > 1:
@@ -18,25 +22,22 @@ class Mancala():
             raise Exception("A valid pot must be selected for play") from error
 
     def generate_turn(self, player_number, pot_number):
+        current_player = player_number
         new_turn = copy.deepcopy(self.game_log[-1])
-        stones_to_sow = new_turn[player_number][pot_number]
+        stones_to_sow = copy.deepcopy(new_turn[current_player][pot_number]) #pick up stones
 
-        new_turn[player_number][pot_number] = 0;
+        new_turn[current_player][pot_number] = 0; #current pot is now empty
 
-        count = 1
-
-        while count <= stones_to_sow:
-            pot = pot_number + count
-            try:
-                new_turn[player_number][pot]
-            except IndexError:
-                print("out of bounds")
-            else:
-                print("pot exists " + str(pot))
-                new_turn[player_number][pot] += 1
-
-            count += 1
-
+        while stones_to_sow:
+            pot_number += 1
+            while pot_number < len(new_turn[current_player]):
+                new_turn[current_player][pot_number] += 1
+                pot_number += 1
+                stones_to_sow -= 1
+            if stones_to_sow > 0:
+                new_turn[2][current_player] += 1
+                stones_to_sow -= 1
+        print(new_turn)
         return new_turn
 
     def play(self, player_number, pot_number):
