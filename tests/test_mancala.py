@@ -66,6 +66,16 @@ class TestGamePlay:
         assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
         assert mancala.game_log[1] == [[4, 4, 4, 4, 4, 0], [5, 5, 5, 4, 4, 4], [1, 0]]
 
+    def test_updates_game_log_with_opposite_capture_when_a_turn_ends_in_the_current_players_empty_pot(self, mancala):
+        mancala.play(1, 6)
+        mancala.play(2, 2)
+        mancala.play(1, 2)
+
+        assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
+        assert mancala.game_log[1] == [[4, 4, 4, 4, 4, 0], [5, 5, 5, 4, 4, 4], [1, 0]]
+        assert mancala.game_log[2] == [[4, 4, 4, 4, 4, 0], [5, 0, 6, 5, 5, 5], [1, 1]]
+        assert mancala.game_log[3] == [[4, 0, 5, 5, 5, 0], [0, 0, 6, 5, 5, 5], [7, 1]]
+
 class TestGamePlayWithMoreStones:
 
     @pytest.fixture(scope='function')
