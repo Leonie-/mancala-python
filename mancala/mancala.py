@@ -32,23 +32,23 @@ class Mancala():
             # put a stone in the store
             new_turn[2][current_player] += 1
             stones_to_sow -= 1
-            # switch sides and continue
-            current_player = 0 if current_player == 1 else 0
-            self.sow(current_player, stones_to_sow, 0, new_turn)
+
+            if stones_to_sow > 0:
+                # switch sides and continue
+                current_player = 0 if current_player == 1 else 1
+                self.sow(current_player, stones_to_sow, 0, new_turn)
 
         print(new_turn)
         return new_turn
 
     def generate_turn(self, player_number, starting_pot):
-        current_player = player_number
         new_turn = copy.deepcopy(self.game_log[-1])
-        stones_to_sow = copy.deepcopy(new_turn[current_player][starting_pot])
+        stones_to_sow = copy.deepcopy(new_turn[player_number][starting_pot])
 
-        new_turn[current_player][starting_pot] = 0
-
+        new_turn[player_number][starting_pot] = 0
         starting_pot += 1
 
-        self.sow(current_player, stones_to_sow, starting_pot, new_turn)
+        self.sow(player_number, stones_to_sow, starting_pot, new_turn)
         return new_turn
 
     def play(self, player_number, pot_number):

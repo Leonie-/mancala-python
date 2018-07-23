@@ -57,3 +57,11 @@ class TestGamePlay:
 
         assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
         assert mancala.game_log[1] == [[5, 4, 4, 4, 4, 4], [4, 4, 4, 0, 5, 5], [0, 1]]
+
+    def test_updates_game_log_when_a_turn_loops_around_to_the_other_side_of_the_board(self, mancala):
+        player_number = 1
+        pot_number = 6
+        mancala.play(player_number, pot_number)
+
+        assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
+        assert mancala.game_log[1] == [[4, 4, 4, 4, 4, 0], [5, 5, 5, 4, 4, 4], [1, 0]]
