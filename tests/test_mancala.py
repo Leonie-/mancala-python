@@ -65,3 +65,17 @@ class TestGamePlay:
 
         assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
         assert mancala.game_log[1] == [[4, 4, 4, 4, 4, 0], [5, 5, 5, 4, 4, 4], [1, 0]]
+
+class TestGamePlayWithMoreStones:
+
+    @pytest.fixture(scope='function')
+    def mancala(self):
+        return Mancala(6, 10)
+
+    def test_updates_game_log_when_a_turn_loops_around_twice_and_does_not_sow_in_opponents_store(self, mancala):
+        player_number = 1
+        pot_number = 5
+        mancala.play(player_number, pot_number)
+
+        assert mancala.game_log[0] == [[10, 10, 10, 10, 10, 10], [10, 10, 10, 10, 10, 10], [0, 0]]
+        assert mancala.game_log[1] == [[11, 11, 10, 10, 0, 11], [11, 11, 11, 11, 11, 11], [1, 0]]

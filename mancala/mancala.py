@@ -21,22 +21,22 @@ class Mancala():
         except IndexError as error:
             raise Exception("A valid pot must be selected for play") from error
 
-    def sow(self, current_player, stones_to_sow, starting_pot, new_turn):
+    def sow(self, starting_player, current_player, stones_to_sow, starting_pot, new_turn):
         # sow a stone in all the pots on the current side until out of stones
         for index, pot in enumerate(new_turn[current_player]):
             if stones_to_sow > 0 and index >= starting_pot and index <= len(new_turn[current_player]):
                 new_turn[current_player][index] += 1
                 stones_to_sow -= 1
 
-        if stones_to_sow > 0:
+        if stones_to_sow > 0 and current_player == starting_player:
             # put a stone in the store
-            new_turn[2][current_player] += 1
+            new_turn[2][starting_player] += 1
             stones_to_sow -= 1
 
-            if stones_to_sow > 0:
-                # switch sides and continue
-                current_player = 0 if current_player == 1 else 1
-                self.sow(current_player, stones_to_sow, 0, new_turn)
+        if stones_to_sow > 0:
+            # switch sides and continue
+            current_player = 0 if current_player == 1 else 1
+            self.sow(starting_player, current_player, stones_to_sow, 0, new_turn)
 
         print(new_turn)
         return new_turn
@@ -48,7 +48,7 @@ class Mancala():
         new_turn[player_number][starting_pot] = 0
         starting_pot += 1
 
-        self.sow(player_number, stones_to_sow, starting_pot, new_turn)
+        self.sow(copy.deepcopy(player_number), player_number, stones_to_sow, starting_pot, new_turn)
         return new_turn
 
     def play(self, player_number, pot_number):
