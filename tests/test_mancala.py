@@ -42,11 +42,20 @@ class TestGamePlay:
             mancala.play(player_number, pot_number)
         assert str(error_message.value) == "A valid pot must be selected for play"
 
+    def test_returns_false_when_player_does_not_get_another_turn(self, mancala):
+        player_number = 1
+        pot_number = 2
+        assert mancala.play(player_number, pot_number) == False
+
+    def test_returns_true_when_player_gets_another_turn(self, mancala):
+        player_number = 1
+        pot_number = 3
+        assert mancala.play(player_number, pot_number) == True
+
     def test_updates_game_log_when_player_one_has_taken_a_move_on_pot_3(self, mancala):
         player_number = 1
         pot_number = 3
         mancala.play(player_number, pot_number)
-
         assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
         assert mancala.game_log[1] == [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]]
 

@@ -22,6 +22,7 @@ class Mancala():
             raise Exception("A valid pot must be selected for play") from error
 
     def sow(self, starting_player, current_player, stones_to_sow, starting_pot, new_turn):
+        take_another_turn = False
         # sow a stone in all the pots on the current side until out of stones
         for index, pot in enumerate(new_turn[current_player]):
             if stones_to_sow > 0 and index >= starting_pot and index <= len(new_turn[current_player]):
@@ -43,14 +44,17 @@ class Mancala():
             # put a stone in the store
             new_turn[2][starting_player] += 1
             stones_to_sow -= 1
+            if stones_to_sow == 0:
+                take_another_turn = True
 
         if stones_to_sow > 0:
             # switch sides and continue
             current_player = 0 if current_player == 1 else 1
-            self.sow(starting_player, current_player, stones_to_sow, 0, new_turn)
+            return self.sow(starting_player, current_player, stones_to_sow, 0, new_turn)
 
-        print(new_turn)
-        return new_turn
+        print("new turn: " + str(new_turn))
+        print("take another turn: " + str(take_another_turn))
+        return [new_turn, take_another_turn]
 
     def generate_turn(self, player_number, starting_pot):
         new_turn = copy.deepcopy(self.game_log[-1])
@@ -59,15 +63,17 @@ class Mancala():
         new_turn[player_number][starting_pot] = 0
         starting_pot += 1
 
-        self.sow(copy.deepcopy(player_number), player_number, stones_to_sow, starting_pot, new_turn)
-        return new_turn
+        return self.sow(copy.deepcopy(player_number), player_number, stones_to_sow, starting_pot, new_turn)
 
     def play(self, player_number, pot_number):
         player_number = player_number - 1;
         pot_number = pot_number - 1;
 
         self.validate_turn(player_number, pot_number)
-        self.game_log.append(self.generate_turn(player_number, pot_number))
+
+        turn = self.generate_turn(player_number, pot_number);
+        self.game_log.append(turn[0])
+        return turn[1]
 
 
 
