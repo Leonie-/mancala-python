@@ -2,14 +2,15 @@ import copy
 
 class Mancala():
 
-# Return game over
-# Work out which player has won
+# Pass in current game state to facilitate testing
+# Test for a draw
 # Make player(s)
+# Legal moves list
 # Reset the game (if has GUI)
 # Make GUI?
-# Legal moves list
 
     def __init__(self, pots, stones):
+        self.winning_player = 0
         self.game_over = False
         self.game_log = [[
             [stones] * pots,
@@ -29,6 +30,10 @@ class Mancala():
     def check_for_game_over(self, current_turn):
         if all(pot == 0 for pot in current_turn[0]) or all(pot == 0 for pot in current_turn[1]):
             self.game_over = True
+
+        if self.game_over == True:
+            self.winning_player = 1 if current_turn[2][0] > current_turn[2][1] else 2
+
 
     def sow(self, starting_player, current_player, stones_to_sow, starting_pot, new_turn):
         take_another_turn = False

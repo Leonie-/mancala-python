@@ -89,7 +89,11 @@ class TestGamePlay:
         mancala.play(1, 1)
         assert mancala.game_over == False
 
-    def test_game_over_returns_true_if_game_is_over(self, mancala):
+    def test_winning_player_returns_zero_when_no_one_has_won(self, mancala):
+        mancala.play(1, 1)
+        assert mancala.winning_player == 0
+
+    def test_game_over_returns_true_if_game_is_over_and_lists_winning_player(self, mancala):
         assert mancala.game_log[-1] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
         mancala.play(1, 6)
         assert mancala.game_log[-1] == [[4, 4, 4, 4, 4, 0], [5, 5, 5, 4, 4, 4], [1, 0]]
@@ -153,7 +157,7 @@ class TestGamePlay:
         mancala.play(2, 4)
         assert mancala.game_log[-1] == [[0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [27, 20]]
         assert mancala.game_over == True
-
+        assert mancala.winning_player == 1
 
 
 class TestGamePlayWithLooping:
