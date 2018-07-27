@@ -2,21 +2,22 @@ import copy
 
 class Mancala():
 
-# Pass in current game state to facilitate testing
 # Test for a draw
 # Make player(s)
 # Legal moves list
 # Reset the game (if has GUI)
 # Make GUI?
 
-    def __init__(self, pots, stones):
-        self.winning_player = 0
-        self.game_over = False
-        self.game_log = [[
+    def __init__(self, pots, stones, initial_state):
+        default_state = [
             [stones] * pots,
             [stones] * pots,
             [0,0]
-        ]]
+        ]
+        self.winning_player = 0
+        self.game_over = False
+        self.game_log = [ default_state ] if initial_state is None else [ initial_state ]
+        print(self.game_log)
 
     def validate_turn(self, player_number, pot_number):
         if player_number < 0 or player_number > 1:
@@ -67,7 +68,7 @@ class Mancala():
             return self.sow(starting_player, current_player, stones_to_sow, 0, new_turn)
 
         print("new turn: " + str(new_turn))
-        # print("take another turn: " + str(take_another_turn))
+        print("take another turn: " + str(take_another_turn))
         return [new_turn, take_another_turn]
 
     def generate_turn(self, player_number, starting_pot):
