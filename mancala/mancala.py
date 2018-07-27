@@ -2,10 +2,15 @@ import copy
 
 class Mancala():
 
-    is_new = True
+# Return game over
+# Work out which player has won
+# Make player(s)
+# Reset the game (if has GUI)
+# Make GUI?
+# Legal moves list
 
     def __init__(self, pots, stones):
-        # create game log
+        self.game_over = False
         self.game_log = [[
             [stones] * pots,
             [stones] * pots,
@@ -21,13 +26,17 @@ class Mancala():
         except IndexError as error:
             raise Exception("A valid pot must be selected for play") from error
 
+    def check_for_game_over(self, current_turn):
+        if all(pot == 0 for pot in current_turn[0]) or all(pot == 0 for pot in current_turn[1]):
+            self.game_over = True
+
     def sow(self, starting_player, current_player, stones_to_sow, starting_pot, new_turn):
         take_another_turn = False
         # sow a stone in all the pots on the current side until out of stones
         for index, pot in enumerate(new_turn[current_player]):
             if stones_to_sow > 0 and index >= starting_pot and index <= len(new_turn[current_player]):
 
-                # opposite capture if last stone, current pot is empty, and player is current player
+                # opposite capture if last stone, current pot is empty, and player side is the current player
                 if stones_to_sow == 1 and new_turn[current_player][index] == 0 and current_player == starting_player:
                     opposite_player = 0 if current_player == 1 else 1
                     opposite_pot_number = len(new_turn[opposite_player]) - index - 1
@@ -53,7 +62,7 @@ class Mancala():
             return self.sow(starting_player, current_player, stones_to_sow, 0, new_turn)
 
         print("new turn: " + str(new_turn))
-        print("take another turn: " + str(take_another_turn))
+        # print("take another turn: " + str(take_another_turn))
         return [new_turn, take_another_turn]
 
     def generate_turn(self, player_number, starting_pot):
@@ -73,7 +82,9 @@ class Mancala():
 
         turn = self.generate_turn(player_number, pot_number);
         self.game_log.append(turn[0])
+        self.check_for_game_over(turn[0])
         return turn[1]
+
 
 
 
