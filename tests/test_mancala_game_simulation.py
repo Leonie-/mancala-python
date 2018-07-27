@@ -5,7 +5,7 @@ class TestGamePlaySimulation:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4, None)
+        return Mancala(6, 4)
 
     def test_game_simulation(self, mancala):
         assert mancala.game_log[-1] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]

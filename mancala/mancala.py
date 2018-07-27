@@ -8,7 +8,7 @@ class Mancala():
 # Reset the game (if has GUI)
 # Make GUI?
 
-    def __init__(self, pots, stones, initial_state):
+    def __init__(self, pots, stones, initial_state = None):
         default_state = [
             [stones] * pots,
             [stones] * pots,

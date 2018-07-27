@@ -5,7 +5,7 @@ class TestInitialGameStateDefault:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4, None)
+        return Mancala(6, 4)
 
     def test_returns_game_log(self, mancala):
         assert mancala.game_log == [
@@ -27,7 +27,7 @@ class TestGamePlay:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4, None)
+        return Mancala(6, 4)
 
     def test_throws_error_when_player_number_is_too_high(self, mancala):
         player_number = 3
@@ -122,7 +122,7 @@ class TestGamePlayWithLooping:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 10, None)
+        return Mancala(6, 10)
 
     def test_updates_game_log_when_a_turn_loops_around_and_does_not_sow_in_opponents_store(self, mancala):
         player_number = 1
