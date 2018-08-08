@@ -1,8 +1,8 @@
 import copy
 
 class Mancala():
-
-# Test for a draw
+# TODO:
+# Only allow player to take one extra turn
 # Make player(s)
 # Legal moves list
 # Reset the game (if has GUI)
@@ -14,7 +14,7 @@ class Mancala():
             [stones] * pots,
             [0,0]
         ]
-        self.winning_player = 0
+        self.winning_player = None
         self.game_over = False
         self.game_log = [ default_state ] if initial_state is None else [ initial_state ]
         print(self.game_log)
@@ -28,12 +28,21 @@ class Mancala():
         except IndexError as error:
             raise Exception("A valid pot must be selected for play") from error
 
+        if self.game_log[-1][player_number][pot_number] is 0:
+            raise ValueError("Selected pot must not be empty")
+
     def check_for_game_over(self, current_turn):
         if all(pot == 0 for pot in current_turn[0]) or all(pot == 0 for pot in current_turn[1]):
             self.game_over = True
 
         if self.game_over == True:
-            self.winning_player = 1 if current_turn[2][0] > current_turn[2][1] else 2
+            winning_player = 0
+            if current_turn[2][0] > current_turn[2][1]:
+                winning_player = 1
+            elif current_turn[2][0] < current_turn[2][1]:
+                winning_player = 2
+
+            self.winning_player = winning_player
 
 
     def sow(self, starting_player, current_player, stones_to_sow, starting_pot, new_turn):

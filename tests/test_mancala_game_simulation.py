@@ -23,52 +23,39 @@ class TestGamePlaySimulation:
         assert mancala.game_log[-1] == [[6, 2, 7, 6, 0, 1], [1, 1, 0, 6, 6, 1], [8, 3]]
         mancala.play(1, 6)
         assert mancala.game_log[-1] == [[6, 2, 7, 6, 0, 0], [1, 1, 0, 6, 6, 1], [9, 3]]
-        mancala.play(1, 6) # player 1 extra move for ending last turn in the store
-        assert mancala.game_log[-1] == [[6, 2, 7, 6, 0, 0], [1, 1, 0, 6, 6, 1], [9, 3]]
+        mancala.play(1, 1) # player 1 extra move for ending last turn in the store
+        assert mancala.game_log[-1] == [[0, 3, 8, 7, 1, 1], [1, 1, 0, 6, 6, 1], [10, 3]]
         mancala.play(2, 6)
-        assert mancala.game_log[-1] == [[6, 2, 7, 6, 0, 0], [1, 1, 0, 6, 6, 0], [9, 4]]
-        mancala.play(2, 5) # player 2 extra move for ending last turn in the store
-        assert mancala.game_log[-1] == [[7, 3, 8, 7, 0, 0], [1, 1, 0, 6, 0, 1], [9, 5]]
-        mancala.play(1, 3)
-        assert mancala.game_log[-1] == [[7, 3, 0, 8, 1, 1], [2, 2, 1, 7, 0, 1], [10, 5]]
-        mancala.play(2, 6)
-        assert mancala.game_log[-1] == [[7, 3, 0, 8, 1, 1], [2, 2, 1, 7, 0, 0], [10, 6]]
-        mancala.play(2, 4) # player 2 extra move for ending last turn in the store
-        assert mancala.game_log[-1] == [[8, 4, 1, 9, 1, 1], [2, 2, 1, 0, 1, 1], [10, 7]]
+        assert mancala.game_log[-1] == [[0, 3, 8, 7, 1, 1], [1, 1, 0, 6, 6, 0], [10, 4]]
+        mancala.play(2, 2) # player 2 extra move for ending last turn in the store
+        assert mancala.game_log[-1] == [[0, 3, 8, 0, 1, 1], [1, 0, 0, 6, 6, 0], [10, 12]]
         mancala.play(1, 6)
-        assert mancala.game_log[-1] == [[8, 4, 1, 9, 1, 0], [2, 2, 1, 0, 1, 1], [11, 7]]
-        mancala.play(1, 4) # player 1 extra move for ending last turn in the store
-        assert mancala.game_log[-1] == [[8, 4, 1, 0, 2, 1], [3, 3, 2, 1, 2, 2], [12, 7]]
+        assert mancala.game_log[-1] == [[0, 3, 8, 0, 1, 0], [1, 0, 0, 6, 6, 0], [11, 12]]
+        mancala.play(1, 5) # player 1 extra move for ending last turn in the store
+        assert mancala.game_log[-1] == [[0, 3, 8, 0, 0, 0], [0, 0, 0, 6, 6, 0], [13, 12]]
         mancala.play(2, 5)
-        assert mancala.game_log[-1] == [[8, 4, 1, 0, 2, 1], [3, 3, 2, 1, 0, 3], [12, 8]]
-        mancala.play(2, 6) # player 2 extra move for ending last turn in the store
-        assert mancala.game_log[-1] == [[9, 5, 1, 0, 2, 1], [3, 3, 2, 1, 0, 0], [12, 9]]
-        mancala.play(1, 6)
-        assert mancala.game_log[-1] == [[9, 5, 1, 0, 2, 0], [3, 3, 2, 1, 0, 0], [13, 9]]
-        mancala.play(1, 5) # player 1 extra move for ending last turn in the store
-        assert mancala.game_log[-1] == [[9, 5, 1, 0, 0, 1], [3, 3, 2, 1, 0, 0], [14, 9]]
-        mancala.play(2, 4)
-        assert mancala.game_log[-1] == [[9, 0, 1, 0, 0, 1], [3, 3, 2, 0, 0, 0], [14, 15]]
-        mancala.play(1, 6)
-        assert mancala.game_log[-1] == [[9, 0, 1, 0, 0, 0], [3, 3, 2, 0, 0, 0], [15, 15]]
-        mancala.play(1, 3) # player 1 extra move for ending last turn in the store
-        assert mancala.game_log[-1] == [[9, 0, 0, 0, 0, 0], [3, 3, 0, 0, 0, 0], [18, 15]]
-        mancala.play(2, 2)
-        assert mancala.game_log[-1] == [[9, 0, 0, 0, 0, 0], [3, 0, 1, 1, 0, 0], [18, 16]]
-        mancala.play(1, 1)
-        assert mancala.game_log[-1] == [[0, 1, 1, 1, 1, 1], [4, 1, 2, 1, 0, 0], [19, 16]]
-        mancala.play(2, 4)
-        assert mancala.game_log[-1] == [[0, 0, 1, 1, 1, 1], [4, 1, 2, 0, 0, 0], [19, 18]]
-        mancala.play(1, 6)
-        assert mancala.game_log[-1] == [[0, 0, 1, 1, 1, 0], [4, 1, 2, 0, 0, 0], [20, 18]]
-        mancala.play(1, 5) # player 1 extra move for ending last turn in the store
-        assert mancala.game_log[-1] == [[0, 0, 1, 1, 0, 0], [0, 1, 2, 0, 0, 0], [25, 18]]
-        mancala.play(2, 3)
-        assert mancala.game_log[-1] == [[0, 0, 1, 1, 0, 0], [0, 1, 0, 1, 0, 0], [25, 19]]
+        assert mancala.game_log[-1] == [[1, 4, 9, 1, 0, 0], [0, 0, 0, 6, 0, 1], [13, 13]]
         mancala.play(1, 4)
-        assert mancala.game_log[-1] == [[0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [27, 19]]
-        assert mancala.game_over == False
+        assert mancala.game_log[-1] == [[1, 4, 9, 0, 0, 0], [0, 0, 0, 6, 0, 1], [14, 13]]
+        mancala.play(2, 6)
+        assert mancala.game_log[-1] == [[1, 4, 9, 0, 0, 0], [0, 0, 0, 6, 0, 0], [14, 14]]
+        mancala.play(2, 4) # player 2 extra move for ending last turn in the store
+        assert mancala.game_log[-1] == [[2, 5, 10, 0, 0, 0], [0, 0, 0, 0, 1, 1], [14, 15]]
+        mancala.play(1, 3)
+        assert mancala.game_log[-1] == [[2, 5, 0, 1, 1, 1], [1, 1, 1, 1, 2, 2], [15, 15]]
+        mancala.play(2, 5)
+        assert mancala.game_log[-1] == [[2, 5, 0, 1, 1, 1], [1, 1, 1, 1, 0, 3], [15, 16]]
+        mancala.play(1, 6)
+        assert mancala.game_log[-1] == [[2, 5, 0, 1, 1, 0], [1, 1, 1, 1, 0, 3], [16, 16]]
+        mancala.play(1, 5) # player 1 extra move for ending last turn in the store
+        assert mancala.game_log[-1] == [[2, 5, 0, 1, 0, 0], [0, 1, 1, 1, 0, 3], [18, 16]]
+        mancala.play(2, 6)
+        assert mancala.game_log[-1] == [[3, 6, 0, 1, 0, 0], [0, 1, 1, 1, 0, 0], [18, 17]]
+        mancala.play(1, 4)
+        assert mancala.game_log[-1] == [[3, 6, 0, 0, 0, 0], [0, 0, 1, 1, 0, 0], [20, 17]]
         mancala.play(2, 4)
-        assert mancala.game_log[-1] == [[0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [27, 20]]
+        assert mancala.game_log[-1] == [[3, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0], [20, 24]]
+        mancala.play(1, 1)
+        assert mancala.game_log[-1] == [[0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [22, 24]]
         assert mancala.game_over == True
-        assert mancala.winning_player == 1
+        assert mancala.winning_player == 2
