@@ -125,17 +125,3 @@ class Mancala():
             if pot != 0:
                 legal_moves.append(i + 1)
         return legal_moves
-
-
-
-
-
-
-
-
-
-
-
-
-
-
