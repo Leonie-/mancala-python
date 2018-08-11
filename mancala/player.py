@@ -6,9 +6,13 @@ class Player():
         self.player_type = player_type
         self.mancala = mancala
 
+    def pick_random_pot(self):
+        return random.choice(self.mancala.get_legal_moves(self.player_number))
+
     def play(self):
         if self.player_type == "random":
-            return random.choice(self.mancala.get_legal_moves(self.player_number))
+            pot = self.pick_random_pot()
+            return self.mancala.play(self.player_number, pot)
 
 
 
