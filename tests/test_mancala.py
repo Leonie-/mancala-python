@@ -23,7 +23,7 @@ class TestInitialGameStateProvided:
             [[0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [27, 19]]
         ]
 
-class TestGamePlay:
+class TestGamePlayValidation:
 
     @pytest.fixture(scope='function')
     def mancala(self):
@@ -53,15 +53,41 @@ class TestGamePlay:
             mancala.play(player_number, pot_number)
         assert str(error_message.value) == "A valid pot must be selected for play"
 
-    def test_returns_false_when_player_does_not_get_another_turn(self, mancala):
-        player_number = 1
-        pot_number = 2
-        assert mancala.play(player_number, pot_number) == False
+    def test_throws_error_when_the_same_player_takes_too_many_turns(self, mancala):
+        mancala.play(1, 2)
+        mancala.play(1, 3)
 
-    def test_returns_true_when_player_gets_another_turn(self, mancala):
-        player_number = 1
-        pot_number = 3
-        assert mancala.play(player_number, pot_number) == True
+        with pytest.raises(Exception) as error_message:
+            mancala.play(1, 4)
+        assert str(error_message.value) == "Player cannot take another turn"
+
+class TestGameThrowsWhenEmptyPotIsSelectedForPlay:
+
+    @pytest.fixture(scope='function')
+    def mancala(self):
+        return Mancala(6, 4, [[0, 2, 1, 0, 0, 0], [0, 0, 0, 1, 0, 4], [27, 19]])
+
+    def test_game_throws_an_error_when_empty_pot_selected_for_play(self, mancala):
+        with pytest.raises(Exception) as error_message:
+            mancala.play(1, 1)
+        assert str(error_message.value) == "Selected pot must not be empty"
+
+class TestGamePlay:
+
+    @pytest.fixture(scope='function')
+    def mancala(self):
+        return Mancala(6, 4)
+
+    def test_increments_player_turn_on_each_play(self, mancala):
+        mancala.play(1, 2)
+        assert mancala.current_player == 1
+        assert mancala.player_turn_number == 1
+        mancala.play(1, 6)
+        assert mancala.current_player == 1
+        assert mancala.player_turn_number == 2
+        mancala.play(2, 1)
+        assert mancala.current_player == 2
+        assert mancala.player_turn_number == 1
 
     def test_updates_game_log_when_player_one_has_taken_a_move_on_pot_3(self, mancala):
         player_number = 1
@@ -104,17 +130,22 @@ class TestGamePlay:
         mancala.play(1, 1)
         assert mancala.winning_player == None
 
-
-class TestGameThrowsWhenEmptyPotIsSelectedForPlay:
+class TestPlayerGetsAnExtraTurn:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4, [[0, 2, 1, 0, 0, 0], [0, 0, 0, 1, 0, 4], [27, 19]])
+        return Mancala(6, 10, [[0, 0, 0, 3, 2, 1], [1, 4, 6, 0, 0, 2], [0, 0]])
 
-    def test_game_throws_an_error_when_empty_pot_selected_for_play(self, mancala):
-        with pytest.raises(Exception) as error_message:
-            mancala.play(1, 1)
-        assert str(error_message.value) == "Selected pot must not be empty"
+    def test_returns_false_when_player_does_not_get_an_extra_turn(self, mancala):
+        assert mancala.play(2, 1) == False
+
+    def test_returns_true_when_player_gets_an_extra_turn(self, mancala):
+        assert mancala.play(1, 6) == True
+
+    def test_returns_false_when_player_gets_another_extra_turn(self, mancala):
+        mancala.play(1, 6)
+        assert mancala.play(1, 5) == False
+
 
 class TestGameEndPlayerOneWin:
 
@@ -156,7 +187,6 @@ class TestGameEndDraw:
         assert mancala.game_over == True
         assert mancala.winning_player == 0
 
-
 class TestGamePlayWithLooping:
 
     @pytest.fixture(scope='function')
@@ -170,3 +200,11 @@ class TestGamePlayWithLooping:
 
         assert mancala.game_log[0] == [[10, 10, 10, 10, 10, 10], [10, 10, 10, 10, 10, 10], [0, 0]]
         assert mancala.game_log[1] == [[11, 11, 10, 10, 0, 11], [11, 11, 11, 11, 11, 11], [1, 0]]
+
+# class TestExtraTurnWhenLooping:
+#     @pytest.fixture(scope='function')
+#     def mancala(self):
+#         return Mancala(6, 16)
+#
+#     def test_returns_true_for_extra_turn_when_looping_around(self, mancala):
+#         assert mancala.play(1,6) == True

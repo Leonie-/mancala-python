@@ -2,7 +2,6 @@ import copy
 
 class Mancala():
 # TODO:
-# Only allow player to take one extra turn
 # Make player(s)
 # Legal moves list
 # Reset the game (if has GUI)
@@ -14,14 +13,30 @@ class Mancala():
             [stones] * pots,
             [0,0]
         ]
+        self.current_player = 0
+        self.player_turn_number = 0
         self.winning_player = None
         self.game_over = False
         self.game_log = [ default_state ] if initial_state is None else [ initial_state ]
         print(self.game_log)
 
+    def check_player_turn_number(self, player_number):
+        print("player number")
+        print(player_number)
+        print("self player number")
+        print(self.current_player)
+        if player_number != self.current_player:
+            self.current_player = player_number
+            self.player_turn_number = 1
+        else:
+            self.player_turn_number += 1
+
     def validate_turn(self, player_number, pot_number):
         if player_number < 0 or player_number > 1:
             raise ValueError("A valid player must be given")
+
+        if self.player_turn_number > 2:
+            raise Exception("Player cannot take another turn")
 
         try:
             self.game_log[-1][player_number][pot_number]
@@ -89,16 +104,25 @@ class Mancala():
 
         return self.sow(copy.deepcopy(player_number), player_number, stones_to_sow, starting_pot, new_turn)
 
+    def check_for_extra_turn(self, extra_turn):
+        if extra_turn is True and self.player_turn_number is 2:
+            # Prevents taking more than one extra turn
+            return False
+        else:
+            return extra_turn
+
     def play(self, player_number, pot_number):
+        self.check_player_turn_number(player_number)
+
         player_number = player_number - 1;
         pot_number = pot_number - 1;
-
         self.validate_turn(player_number, pot_number)
 
         turn = self.generate_turn(player_number, pot_number);
         self.game_log.append(turn[0])
+
         self.check_for_game_over(turn[0])
-        return turn[1]
+        return self.check_for_extra_turn(turn[1])
 
 
 
