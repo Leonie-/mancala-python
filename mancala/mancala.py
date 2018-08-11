@@ -1,12 +1,6 @@
 import copy
 
 class Mancala():
-# TODO:
-# Make player(s)
-# Legal moves list
-# Reset the game (if has GUI)
-# Make GUI?
-
     def __init__(self, pots, stones, initial_state = None):
         default_state = [
             [stones] * pots,
@@ -123,6 +117,16 @@ class Mancala():
 
         self.check_for_game_over(turn[0])
         return self.check_for_extra_turn(turn[1])
+
+    def get_legal_moves(self, player_number):
+        player_number = player_number - 1
+        legal_moves = []
+        for i, pot in enumerate(self.game_log[-1][player_number]):
+            if pot != 0:
+                legal_moves.append(i + 1)
+        return legal_moves
+
+
 
 
 

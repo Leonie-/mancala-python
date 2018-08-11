@@ -201,10 +201,18 @@ class TestGamePlayWithLooping:
         assert mancala.game_log[0] == [[10, 10, 10, 10, 10, 10], [10, 10, 10, 10, 10, 10], [0, 0]]
         assert mancala.game_log[1] == [[11, 11, 10, 10, 0, 11], [11, 11, 11, 11, 11, 11], [1, 0]]
 
-# class TestExtraTurnWhenLooping:
-#     @pytest.fixture(scope='function')
-#     def mancala(self):
-#         return Mancala(6, 16)
-#
-#     def test_returns_true_for_extra_turn_when_looping_around(self, mancala):
-#         assert mancala.play(1,6) == True
+class TestExtraTurnWhenLooping:
+    @pytest.fixture(scope='function')
+    def mancala(self):
+        return Mancala(6, 14)
+
+    def test_returns_true_for_extra_turn_when_looping_around(self, mancala):
+        assert mancala.play(1,6) == True
+
+class TestReturnsLegalMoves:
+    @pytest.fixture(scope='function')
+    def mancala(self):
+        return Mancala(0, 0, [[0, 0, 1, 0, 4, 0], [0, 0, 0, 1, 0, 0], [23, 19]])
+
+    def test_returns_true_for_extra_turn_when_looping_around(self, mancala):
+        assert mancala.get_legal_moves(1) == [3, 5]
