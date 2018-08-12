@@ -57,5 +57,5 @@ class TestGamePlaySimulation:
         assert mancala.game_log[-1] == [[3, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0], [20, 24]]
         mancala.play(1, 1)
         assert mancala.game_log[-1] == [[0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [22, 24]]
-        assert mancala.game_over == True
+        assert mancala.game_over() == True
         assert mancala.winning_player == 2

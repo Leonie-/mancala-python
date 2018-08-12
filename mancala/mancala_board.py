@@ -10,7 +10,7 @@ class MancalaBoard():
         self.current_player = 0
         self.player_turn_number = 0
         self.winning_player = None
-        self.game_over = False
+        self.game_is_over = False
         self.game_log = [ default_state ] if initial_state is None else [ initial_state ]
         print(self.game_log)
 
@@ -38,9 +38,9 @@ class MancalaBoard():
 
     def check_for_game_over(self, current_turn):
         if all(pot == 0 for pot in current_turn[0]) or all(pot == 0 for pot in current_turn[1]):
-            self.game_over = True
+            self.game_is_over = True
 
-        if self.game_over == True:
+        if self.game_is_over == True:
             winning_player = 0
             if current_turn[2][0] > current_turn[2][1]:
                 winning_player = 1
@@ -121,3 +121,6 @@ class MancalaBoard():
             if pot != 0:
                 legal_moves.append(i + 1)
         return legal_moves
+
+    def game_over(self):
+        return self.game_is_over

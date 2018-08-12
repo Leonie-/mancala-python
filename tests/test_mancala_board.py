@@ -125,7 +125,7 @@ class TestGamePlay:
 
     def test_game_over_returns_false_if_game_is_not_over(self, mancala):
         mancala.play(1, 1)
-        assert mancala.game_over == False
+        assert mancala.game_over() == False
 
     def test_winning_player_is_none_when_no_one_has_won(self, mancala):
         mancala.play(1, 1)
@@ -155,10 +155,10 @@ class TestGameEndPlayerOneWin:
         return MancalaBoard(6, 4, [[0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [27, 19]])
 
     def test_game_over_is_true_and_winning_player_is_set_at_game_end(self, mancala):
-        assert mancala.game_over == False
+        assert mancala.game_over() == False
         mancala.play(2, 4)
         assert mancala.game_log[-1] == [[0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [27, 20]]
-        assert mancala.game_over == True
+        assert mancala.game_over() == True
         assert mancala.winning_player == 1
 
 class TestGameEndPlayerTwoWin:
@@ -169,10 +169,10 @@ class TestGameEndPlayerTwoWin:
 
     def test_game_over_is_true_and_winning_player_is_set_at_game_end(self, mancala):
         assert mancala.game_log[-1] == [[0, 0, 0, 0, 5, 0], [1, 0, 0, 0, 0, 0], [20, 20]]
-        assert mancala.game_over == False
+        assert mancala.game_over() == False
         mancala.play(2, 1)
         assert mancala.game_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [20, 26]]
-        assert mancala.game_over == True
+        assert mancala.game_over() == True
         assert mancala.winning_player == 2
 
 class TestGameEndDraw:
@@ -185,7 +185,7 @@ class TestGameEndDraw:
         assert mancala.game_log[0] == [[0, 0, 0, 7, 4, 0], [0, 0, 0, 0, 1, 0], [31, 30]]
         mancala.play(2, 5)
         assert mancala.game_log[1] == [[0, 0, 0, 7, 4, 0], [0, 0, 0, 0, 0, 0], [31, 31]]
-        assert mancala.game_over == True
+        assert mancala.game_over() == True
         assert mancala.winning_player == 0
 
 class TestGamePlayWithLooping:
