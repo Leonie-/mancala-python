@@ -1,11 +1,12 @@
-from mancala.mancala import Mancala
 import pytest
+
+from mancala.mancala_board import MancalaBoard
 
 class TestInitialGameStateDefault:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4)
+        return MancalaBoard(6, 4)
 
     def test_returns_game_log(self, mancala):
         assert mancala.game_log == [
@@ -16,7 +17,7 @@ class TestInitialGameStateProvided:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4, [[0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [27, 19]])
+        return MancalaBoard(6, 4, [[0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [27, 19]])
 
     def test_returns_game_log_with_initial_state_when_provided(self, mancala):
         assert mancala.game_log == [
@@ -27,7 +28,7 @@ class TestGamePlayValidation:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4)
+        return MancalaBoard(6, 4)
 
     def test_throws_error_when_player_number_is_too_high(self, mancala):
         player_number = 3
@@ -65,7 +66,7 @@ class TestGameThrowsWhenEmptyPotIsSelectedForPlay:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4, [[0, 2, 1, 0, 0, 0], [0, 0, 0, 1, 0, 4], [27, 19]])
+        return MancalaBoard(6, 4, [[0, 2, 1, 0, 0, 0], [0, 0, 0, 1, 0, 4], [27, 19]])
 
     def test_game_throws_an_error_when_empty_pot_selected_for_play(self, mancala):
         with pytest.raises(Exception) as error_message:
@@ -76,7 +77,7 @@ class TestGamePlay:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4)
+        return MancalaBoard(6, 4)
 
     def test_increments_player_turn_on_each_play(self, mancala):
         mancala.play(1, 2)
@@ -134,7 +135,7 @@ class TestPlayerGetsAnExtraTurn:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 10, [[0, 0, 0, 3, 2, 1], [1, 4, 6, 0, 0, 2], [0, 0]])
+        return MancalaBoard(6, 10, [[0, 0, 0, 3, 2, 1], [1, 4, 6, 0, 0, 2], [0, 0]])
 
     def test_returns_false_when_player_does_not_get_an_extra_turn(self, mancala):
         assert mancala.play(2, 1) == False
@@ -151,7 +152,7 @@ class TestGameEndPlayerOneWin:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4, [[0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [27, 19]])
+        return MancalaBoard(6, 4, [[0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [27, 19]])
 
     def test_game_over_is_true_and_winning_player_is_set_at_game_end(self, mancala):
         assert mancala.game_over == False
@@ -164,7 +165,7 @@ class TestGameEndPlayerTwoWin:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4, [[0, 0, 0, 0, 5, 0], [1, 0, 0, 0, 0, 0], [20, 20]])
+        return MancalaBoard(6, 4, [[0, 0, 0, 0, 5, 0], [1, 0, 0, 0, 0, 0], [20, 20]])
 
     def test_game_over_is_true_and_winning_player_is_set_at_game_end(self, mancala):
         assert mancala.game_log[-1] == [[0, 0, 0, 0, 5, 0], [1, 0, 0, 0, 0, 0], [20, 20]]
@@ -178,7 +179,7 @@ class TestGameEndDraw:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 10, [[0, 0, 0, 7, 4, 0], [0, 0, 0, 0, 1, 0], [31, 30]])
+        return MancalaBoard(6, 10, [[0, 0, 0, 7, 4, 0], [0, 0, 0, 0, 1, 0], [31, 30]])
 
     def test_game_over_is_true_and_winning_player_is_0_if_draw(self, mancala):
         assert mancala.game_log[0] == [[0, 0, 0, 7, 4, 0], [0, 0, 0, 0, 1, 0], [31, 30]]
@@ -191,7 +192,7 @@ class TestGamePlayWithLooping:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 10)
+        return MancalaBoard(6, 10)
 
     def test_updates_game_log_when_a_turn_loops_around_and_does_not_sow_in_opponents_store(self, mancala):
         player_number = 1
@@ -204,7 +205,7 @@ class TestGamePlayWithLooping:
 class TestExtraTurnWhenLooping:
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 14)
+        return MancalaBoard(6, 14)
 
     def test_returns_true_for_extra_turn_when_looping_around(self, mancala):
         assert mancala.play(1,6) == True
@@ -212,7 +213,7 @@ class TestExtraTurnWhenLooping:
 class TestReturnsLegalMoves:
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(0, 0, [[0, 0, 1, 0, 4, 0], [0, 0, 0, 1, 0, 0], [23, 19]])
+        return MancalaBoard(0, 0, [[0, 0, 1, 0, 4, 0], [0, 0, 0, 1, 0, 0], [23, 19]])
 
     def test_returns_true_for_extra_turn_when_looping_around(self, mancala):
         assert mancala.get_legal_moves(1) == [3, 5]

@@ -1,11 +1,11 @@
-from mancala.mancala import Mancala
+from mancala.mancala_board import MancalaBoard
 import pytest
 
 class TestGamePlaySimulation:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return Mancala(6, 4)
+        return MancalaBoard(6, 4)
 
     def test_game_simulation(self, mancala):
         assert mancala.game_log[-1] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]

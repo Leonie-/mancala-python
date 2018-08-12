@@ -1,6 +1,6 @@
 import copy
 
-class Mancala():
+class MancalaBoard():
     def __init__(self, pots, stones, initial_state = None):
         default_state = [
             [stones] * pots,
@@ -15,10 +15,6 @@ class Mancala():
         print(self.game_log)
 
     def check_player_turn_number(self, player_number):
-        print("player number")
-        print(player_number)
-        print("self player number")
-        print(self.current_player)
         if player_number != self.current_player:
             self.current_player = player_number
             self.player_turn_number = 1
@@ -86,7 +82,7 @@ class Mancala():
             return self.sow(starting_player, current_player, stones_to_sow, 0, new_turn)
 
         print("new turn: " + str(new_turn))
-        print("take another turn: " + str(take_another_turn))
+        # print("take another turn: " + str(take_another_turn))
         return [new_turn, take_another_turn]
 
     def generate_turn(self, player_number, starting_pot):
