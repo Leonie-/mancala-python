@@ -14,7 +14,6 @@ class Game():
     def switch_players(self, current_player):
         return 1 if current_player is 2 else 2
 
-
     def play(self, current_player):
         take_turn = self.players[current_player - 1].play()
 
@@ -35,6 +34,6 @@ class Game():
 game = Game()
 game_log = game.play(1)
 
-with open('mancala_game_data.csv', 'wb') as csvfile:
+with open('mancala_game_data.csv', 'w', newline='') as csvfile:
     filewriter = csv.writer(csvfile)
-    filewriter.writerow(game_log.encode())
+    filewriter.writerow(game_log)
