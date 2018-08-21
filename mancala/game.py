@@ -7,18 +7,17 @@ class Game():
         return 1 if current_player is 2 else 2
 
     def play(self, current_player):
-        take_turn = self.players[current_player - 1].play()
-        print(f"GAME OVER: {self.game.game_over()}")
+        player = self.players[current_player - 1]
+        take_turn = player.play()
         game_over = self.game.game_over()
+
         if game_over is True:
             return self.game.game_log
 
-        if take_turn == True:
+        if take_turn is True:
             # Player takes an extra turn
-            print("Extra Turn for player {current_player}")
-            self.players[current_player - 1].play()
+            player.play()
 
         # Switch players and continue
         opposite_player = self.switch_players(current_player)
-        # print(f"Switched to player {opposite_player}")
         return self.play(opposite_player)

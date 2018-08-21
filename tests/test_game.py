@@ -23,20 +23,35 @@ class TestGamePlay:
 
         game = Game(mock_mancala_board, mock_player_one, mock_player_two)
         game.play(current_player)
-        mock_player_one.play.assert_called_once
+        assert mock_player_one.play.call_count == 1
 
     def test_player_one_takes_an_extra_turn(self):
-        game_over_states = [True, False]
         current_player = 1
         mock_mancala_board = mock.Mock()
         mock_player_one = mock.Mock()
         mock_player_two = mock.Mock()
-        mock_mancala_board.game_over.return_value = game_over_states.pop()
-        mock_player_one.play.return_value = False
+        mock_mancala_board.game_over.side_effect = [False, True]
+        mock_player_one.play.side_effect = [True, False]
 
         game = Game(mock_mancala_board, mock_player_one, mock_player_two)
         game.play(current_player)
-        mock_player_one.play.assert_called_twice
+
+        assert mock_player_one.play.call_count == 2
+
+    def test_player_two_takes_a_turn_after_player_one(self):
+        current_player = 1
+        mock_mancala_board = mock.Mock()
+        mock_player_one = mock.Mock()
+        mock_player_two = mock.Mock()
+        mock_mancala_board.game_over.side_effect = [False, True]
+        mock_player_one.play.side_effect = [True, False]
+        mock_player_two.play.side_effect = [False]
+
+        game = Game(mock_mancala_board, mock_player_one, mock_player_two)
+        game.play(current_player)
+
+        assert mock_player_one.play.call_count == 2
+        assert mock_player_two.play.call_count == 1
 
     def test_returns_the_game_log_on_game_over(self):
         expected_game_log = "[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]"
