@@ -18,10 +18,13 @@ class Player():
 
     def minimaxScore(self, game_instance, depth):
         if game_instance.winning_player is self.player_number:
+            print(f"Current player wins: {game_instance.game_log[-1]}")
             return 10
         elif game_instance.winning_player is self.opposite_player_number:
+            print(f"Opposite player wins: {game_instance.game_log[-1]}")
             return -10
         else:
+            print(f"Game draw: {game_instance.game_log[-1]}")
             return 0
 
     def minimax(self, game, phasing_player, depth = 0):
@@ -30,7 +33,7 @@ class Player():
 
         depth += 1
 
-        # if depth > 4:
+        # if depth > 8:
         #     return 10
 
         scores = []
@@ -42,7 +45,7 @@ class Player():
         print(f"------Depth {depth} Player {phasing_player} Legal moves: {legal_moves}")
 
         for move in legal_moves:
-            possible_game = MancalaBoard(6, 4, last_move)
+            possible_game = MancalaBoard(3, 3, last_move)
             take_another_turn = possible_game.play(phasing_player, move)
 
             print(f"Move on pot: {move}")
@@ -51,10 +54,8 @@ class Player():
                 next_player = phasing_player
 
             score = self.minimax(possible_game, next_player, depth)
-
             scores.append(score)
             moves.append(move)
-            print(f"score {score}")
 
         # Do the min or max calculation
         if phasing_player == self.player_number:
