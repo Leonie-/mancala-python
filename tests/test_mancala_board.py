@@ -52,6 +52,7 @@ class TestGamePlayValidation:
 
         with pytest.raises(Exception) as error_message:
             mancala.play(player_number, pot_number)
+        print(str(error_message.value))
         assert str(error_message.value) == "A valid pot must be selected for play"
 
     def test_throws_error_when_the_same_player_takes_too_many_turns(self, mancala):
@@ -60,7 +61,7 @@ class TestGamePlayValidation:
 
         with pytest.raises(Exception) as error_message:
             mancala.play(1, 4)
-        assert str(error_message.value) == "Player cannot take another turn"
+        assert str(error_message.value) == "Player 1 cannot take another turn"
 
 class TestGameThrowsWhenEmptyPotIsSelectedForPlay:
 
@@ -71,7 +72,10 @@ class TestGameThrowsWhenEmptyPotIsSelectedForPlay:
     def test_game_throws_an_error_when_empty_pot_selected_for_play(self, mancala):
         with pytest.raises(Exception) as error_message:
             mancala.play(1, 1)
-        assert str(error_message.value) == "Selected pot must not be empty"
+
+        print(str(error_message.value))
+
+        assert str(error_message.value) == "Selected pot 1 must not be empty"
 
 class TestGamePlay:
 
@@ -157,7 +161,7 @@ class TestGameEndPlayerOneWin:
     def test_game_over_is_true_and_winning_player_is_set_at_game_end(self, mancala):
         assert mancala.game_over() == False
         mancala.play(2, 4)
-        assert mancala.game_log[-1] == [[0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [27, 20]]
+        assert mancala.game_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [28, 20]]
         assert mancala.game_over() == True
         assert mancala.winning_player == 1
 
@@ -175,16 +179,30 @@ class TestGameEndPlayerTwoWin:
         assert mancala.game_over() == True
         assert mancala.winning_player == 2
 
+class TestGameEndTidyUp:
+
+    @pytest.fixture(scope='function')
+    def mancala(self):
+        return MancalaBoard(6, 4, [[0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [27, 19]])
+
+    def test_game_over_is_true_and_all_remaining_stones_are_moved_into_the_store(self, mancala):
+        assert mancala.game_over() == False
+        mancala.play(2, 4)
+        assert mancala.game_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [28, 20]]
+        assert mancala.game_over() == True
+        assert mancala.winning_player == 1
+
 class TestGameEndDraw:
 
     @pytest.fixture(scope='function')
     def mancala(self):
-        return MancalaBoard(6, 10, [[0, 0, 0, 7, 4, 0], [0, 0, 0, 0, 1, 0], [31, 30]])
+        return MancalaBoard(6, 10, [[0, 0, 0, 7, 0, 0], [0, 0, 0, 0, 1, 0], [23, 29]])
 
     def test_game_over_is_true_and_winning_player_is_0_if_draw(self, mancala):
-        assert mancala.game_log[0] == [[0, 0, 0, 7, 4, 0], [0, 0, 0, 0, 1, 0], [31, 30]]
+        assert mancala.game_log[0] == [[0, 0, 0, 7, 0, 0], [0, 0, 0, 0, 1, 0], [23, 29]]
         mancala.play(2, 5)
-        assert mancala.game_log[1] == [[0, 0, 0, 7, 4, 0], [0, 0, 0, 0, 0, 0], [31, 31]]
+
+        assert mancala.game_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [30, 30]]
         assert mancala.game_over() == True
         assert mancala.winning_player == 0
 

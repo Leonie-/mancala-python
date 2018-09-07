@@ -12,7 +12,7 @@ class MancalaBoard():
         self.winning_player = None
         self.game_is_over = False
         self.game_log = [ default_state ] if initial_state is None else [ initial_state ]
-        print(self.game_log)
+        # print(self.game_log)
 
     def check_player_turn_number(self, player_number):
         if player_number != self.current_player:
@@ -23,22 +23,34 @@ class MancalaBoard():
 
     def validate_turn(self, player_number, pot_number):
         if player_number < 0 or player_number > 1:
-            raise ValueError("A valid player must be given")
+            raise ValueError(f"A valid player must be given")
 
         if self.player_turn_number > 2:
-            raise Exception("Player cannot take another turn")
+            raise Exception(f"Player {player_number + 1} cannot take another turn")
 
         try:
             self.game_log[-1][player_number][pot_number]
         except IndexError as error:
-            raise Exception("A valid pot must be selected for play") from error
+            raise Exception(f"A valid pot must be selected for play") from error
 
         if self.game_log[-1][player_number][pot_number] is 0:
-            raise ValueError("Selected pot must not be empty")
+            raise ValueError(f"Selected pot {pot_number + 1} must not be empty")
+
+    def clear_remaining_stones(self, player_one_already_clear):
+        player_to_clear = 1 if player_one_already_clear else 0
+
+        # Add sum of remaining stones to store
+        self.game_log[-1][2][player_to_clear] += sum(self.game_log[-1][player_to_clear])
+        # Clear board
+        self.game_log[-1][player_to_clear] = [0 if x == 1 else 0 for x in self.game_log[-1][player_to_clear]]
 
     def check_for_game_over(self, current_turn):
-        if all(pot == 0 for pot in current_turn[0]) or all(pot == 0 for pot in current_turn[1]):
+        player_one_clear = all(pot == 0 for pot in current_turn[0])
+        player_two_clear = all(pot == 0 for pot in current_turn[1])
+
+        if player_one_clear or player_two_clear:
             self.game_is_over = True
+            self.clear_remaining_stones(player_one_clear)
 
         if self.game_is_over == True:
             winning_player = 0
@@ -81,7 +93,7 @@ class MancalaBoard():
             current_player = 0 if current_player == 1 else 1
             return self.sow(starting_player, current_player, stones_to_sow, 0, new_turn)
 
-        print("new turn: " + str(new_turn))
+        # print(f"Player {current_player} new turn: {new_turn}")
         # print("take another turn: " + str(take_another_turn))
         return [new_turn, take_another_turn]
 
@@ -112,7 +124,11 @@ class MancalaBoard():
         self.game_log.append(turn[0])
 
         self.check_for_game_over(turn[0])
-        return self.check_for_extra_turn(turn[1])
+
+        if self.game_is_over == True:
+            return False
+        else:
+            return self.check_for_extra_turn(turn[1])
 
     def get_legal_moves(self, player_number):
         player_number = player_number - 1
