@@ -32,14 +32,101 @@ class TestRandomPlayer:
         mancala_mock.get_legal_moves.return_value = [3,4,5,6]
         mancala_mock.play.return_value = True
         player = Player(1, "random", mancala_mock)
+
         assert player.play() == True
         mancala_mock.play.assert_called_with(1, 5)
 
 
-# class ScoreMiniMaxScore:
-#
-#     def test_minimax_scoring_when_current_player_wins(self):
-#         mancala_mock = mock.Mock()
-#         player = Player(1, "minimax", mancala_mock)
-#
-#         mancala_mock.get_legal_moves.assert_called_with(1)
+class TestMiniMaxScoreAtLeaf:
+
+    def test_minimax_scoring_when_leaf_is_reached_and_current_player_wins(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0,0,0,0,0,0], [0,0,0,0,0,0], [14,6]]]
+        mancala_mock.winning_player = 1
+        game_over = True
+
+        player = Player(1, "minimax", mancala_mock)
+        assert player.minimaxScore(mancala_mock, 0, game_over) == 100
+
+    def test_minimax_scoring_with_depth_when_leaf_is_reached_and_current_player_wins(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0,0,0,0,0,0], [0,0,0,0,0,0], [14,6]]]
+        mancala_mock.winning_player = 1
+        depth = 8
+        game_over = True
+
+        player = Player(1, "minimax", mancala_mock)
+        assert player.minimaxScore(mancala_mock, depth, game_over) == 100 - depth
+
+    def test_minimax_scoring_when_leaf_is_reached_and_opposite_player_wins(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0,0,0,0,0,0], [0,0,0,0,0,0], [14,6]]]
+        mancala_mock.winning_player = 2
+        game_over = True
+
+        player = Player(1, "minimax", mancala_mock)
+        assert player.minimaxScore(mancala_mock, 0, game_over) == 0
+
+    def test_minimax_scoring_with_depth_when_leaf_is_reached_and_opposite_player_wins(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0,0,0,0,0,0], [0,0,0,0,0,0], [14,6]]]
+        mancala_mock.winning_player = 2
+        depth = 6
+        game_over = True
+
+        player = Player(1, "minimax", mancala_mock)
+        assert player.minimaxScore(mancala_mock, depth, game_over) == 0 - depth
+
+    def test_minimax_scoring_when_leaf_is_reached_and_game_is_a_draw(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0,0,0,0,0,0], [0,0,0,0,0,0], [28,28]]]
+        mancala_mock.winning_player = 0
+        game_over = True
+
+        player = Player(1, "minimax", mancala_mock)
+        assert player.minimaxScore(mancala_mock, 0, game_over) == 50
+
+class TestMiniMaxScoreMidGame:
+
+    def test_minimax_scoring_when_leaf_is_not_reached_but_current_player_is_winning(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0,4,5,0,8,0], [0,0,3,0,0,0], [12,23]]]
+        game_over = False
+
+        player = Player(1, "minimax", mancala_mock)
+        assert player.minimaxScore(mancala_mock, 0, game_over) == 100
+
+    def test_minimax_scoring_with_depth_when_leaf_is_not_reached_but_current_player_is_winning(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0,4,5,0,8,0], [0,0,3,0,0,0], [12,23]]]
+        depth = 3
+        game_over = False
+
+        player = Player(1, "minimax", mancala_mock)
+        assert player.minimaxScore(mancala_mock, depth, game_over) == 100 - depth
+
+    def test_minimax_scoring_when_leaf_is_not_reached_but_opposite_player_is_winning(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0,0,3,0,0,0], [0,4,5,0,8,0], [23,12]]]
+        game_over = False
+
+        player = Player(1, "minimax", mancala_mock)
+        assert player.minimaxScore(mancala_mock, 0, game_over) == 0
+
+    def test_minimax_scoring_with_depth_when_leaf_is_not_reached_but_opposite_player_is_winning(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0,0,3,0,0,0], [0,4,5,0,8,0], [23,12]]]
+        depth = 3
+        game_over = False
+
+        player = Player(1, "minimax", mancala_mock)
+        assert player.minimaxScore(mancala_mock, depth, game_over) == 0 - depth
+
+
+    def test_minimax_scoring_when_leaf_is_not_reached_but_game_is_a_draw(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[2,0,3,0,0,0], [1,1,1,1,1,0], [15,15]]]
+        game_over = False
+
+        player = Player(1, "minimax", mancala_mock)
+        assert player.minimaxScore(mancala_mock, 0, game_over) == 50

@@ -16,45 +16,35 @@ class Player():
     def pick_random(self):
         return random.choice(self.mancala.get_legal_moves(self.player_number))
 
-    def minimaxScore(self, game_instance, depth):
-        if game_instance.winning_player is self.player_number:
+    def calculate_winner(self, board_state):
+        player_one_score = board_state[2][0] + sum(board_state[0])
+        player_two_score = board_state[2][1] + sum(board_state[1])
+
+        if player_one_score > player_two_score:
+            return 1
+        elif player_one_score < player_two_score:
+            return 2
+        else:
+            return 0
+
+    def minimaxScore(self, game_instance, depth, game_over):
+        last_move = game_instance.game_log[-1]
+        winner = game_instance.winning_player if game_over else self.calculate_winner(last_move)
+
+        if winner is self.player_number:
             print(f"Current player wins: {game_instance.game_log[-1]}")
             return 100 - depth
-        elif game_instance.winning_player is self.opposite_player_number:
+        elif winner is self.opposite_player_number:
             print(f"Opposite player wins: {game_instance.game_log[-1]}")
             return 0 - depth
         else:
             print(f"Game draw: {game_instance.game_log[-1]}")
             return 50
-
-    def minimaxScoreMidGame(self, game_instance, depth):
-        player_one_score = game_instance.game_log[-1][2][0]
-        player_two_score = game_instance.game_log[-1][2][1]
-
-        player_one_pots = sum(game_instance.game_log[-1][0])
-        player_two_pots = sum(game_instance.game_log[-1][0])
-
-        player_one_score += player_one_pots
-        player_two_score += player_two_pots
-
-        if player_one_score == player_two_score:
-            print(f"Game draw: {game_instance.game_log[-1]}")
-            return 50
-        elif (player_one_score > player_two_score and self.player_number is 1) or (player_one_score < player_two_score and self.player_number is 2):
-            print(f"Current player wins: {game_instance.game_log[-1]}")
-            return 100 - depth
-        else:
-            print(f"Opposite player wins: {game_instance.game_log[-1]}")
-            return 0 - depth
-
-
 
     def minimax(self, game, phasing_player, depth = 0, move = None):
-        if game.game_over():
-            return [self.minimaxScore(game, depth), move]
-
-        if depth is self.maximum_depth:
-            return [self.minimaxScoreMidGame(game, depth), move]
+        game_over = game.game_over()
+        if game_over or depth is self.maximum_depth:
+            return [self.minimaxScore(game, depth, game_over), move]
 
         depth += 1
 
