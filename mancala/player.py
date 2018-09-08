@@ -3,11 +3,10 @@ import random
 from mancala_board import MancalaBoard
 
 class Player():
-    def __init__(self, player_number, player_type, opposite_player_type, mancala, maximum_depth = 4):
+    def __init__(self, player_number, player_type, mancala, maximum_depth = 5):
         self.player_number = player_number
         self.player_type = player_type
         self.opposite_player_number = self.get_opposite_player(self.player_number)
-        self.opposite_player_type = opposite_player_type
         self.mancala = mancala
         self.maximum_depth = maximum_depth
 
@@ -28,8 +27,7 @@ class Player():
             print(f"Game draw: {game_instance.game_log[-1]}")
             return 50
 
-    def minimaxScoreMidGame(self, game_instance):
-        print(f"PLAYER: {self.player_number}")
+    def minimaxScoreMidGame(self, game_instance, depth):
         player_one_score = game_instance.game_log[-1][2][0]
         player_two_score = game_instance.game_log[-1][2][1]
 
@@ -44,17 +42,19 @@ class Player():
             return 50
         elif (player_one_score > player_two_score and self.player_number is 1) or (player_one_score < player_two_score and self.player_number is 2):
             print(f"Current player wins: {game_instance.game_log[-1]}")
-            return 100
+            return 100 - depth
         else:
             print(f"Opposite player wins: {game_instance.game_log[-1]}")
-            return 0
+            return 0 - depth
+
+
 
     def minimax(self, game, phasing_player, depth = 0, move = None):
         if game.game_over():
             return [self.minimaxScore(game, depth), move]
 
         if depth is self.maximum_depth:
-            return [self.minimaxScoreMidGame(game), move]
+            return [self.minimaxScoreMidGame(game, depth), move]
 
         depth += 1
 
@@ -69,8 +69,6 @@ class Player():
         for move in legal_moves:
             possible_game = MancalaBoard(6, 6, last_move)
             take_another_turn = possible_game.play(phasing_player, move)
-
-            # print(f"Player {phasing_player} moves on pot: {move}")
 
             if take_another_turn is True:
                 next_player = phasing_player
@@ -89,10 +87,7 @@ class Player():
 
 
     def pick_minimax(self):
-        phasing_player = self.player_number
-        minimax = self.minimax(self.mancala, phasing_player)
-        print(f"MINIMAX POT CHOSEN {minimax[1]}")
-        return minimax[1]
+        return self.minimax(self.mancala, self.player_number)[1]
 
     def play(self):
         if self.player_type == "random":

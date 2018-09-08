@@ -6,6 +6,8 @@ def test_creates_a_new_player():
     player = Player(1, "random", mock.Mock())
     assert player.player_number == 1
     assert player.player_type == "random"
+    assert player.opposite_player_number == 2
+    assert player.maximum_depth == 5
 
 class TestRandomPlayer:
 
@@ -32,3 +34,12 @@ class TestRandomPlayer:
         player = Player(1, "random", mancala_mock)
         assert player.play() == True
         mancala_mock.play.assert_called_with(1, 5)
+
+
+# class ScoreMiniMaxScore:
+#
+#     def test_minimax_scoring_when_current_player_wins(self):
+#         mancala_mock = mock.Mock()
+#         player = Player(1, "minimax", mancala_mock)
+#
+#         mancala_mock.get_legal_moves.assert_called_with(1)
