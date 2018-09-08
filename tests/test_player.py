@@ -36,6 +36,14 @@ class TestRandomPlayer:
         assert player.play() == True
         mancala_mock.play.assert_called_with(1, 5)
 
+class TestRightPotPlayer:
+
+    def test_picks_the_rightmost_pot_from_legal_moves_available(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.get_legal_moves.return_value = [1, 4, 6]
+        player = Player(1, "rightpot", mancala_mock)
+        player.play()
+        mancala_mock.play.assert_called_with(1, 6)
 
 class TestMiniMaxScoreAtLeaf:
 

@@ -79,14 +79,21 @@ class Player():
     def pick_minimax(self):
         return self.minimax(self.mancala, self.player_number)[1]
 
+    def pick_right_pot(self):
+         return self.mancala.get_legal_moves(self.player_number)[-1]
+
     def play(self):
-        if self.player_type == "random":
-            pot = self.pick_random()
-            return self.mancala.play(self.player_number, pot)
+        pot = self.pick_random()
 
         if self.player_type == "minimax":
             pot = self.pick_minimax()
-            return self.mancala.play(self.player_number, pot)
+
+        if self.player_type == "rightpot":
+            pot = self.pick_right_pot()
+
+        print(f"Pot chosen for play: {pot}")
+
+        return self.mancala.play(self.player_number, pot)
 
 
 
