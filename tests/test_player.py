@@ -7,7 +7,7 @@ def test_creates_a_new_player():
     assert player.player_number == 1
     assert player.player_type == "random"
     assert player.opposite_player_number == 2
-    assert player.maximum_depth == 5
+    assert player.maximum_depth == float("inf")
 
 class TestRandomPlayer:
 
