@@ -235,3 +235,12 @@ class TestReturnsLegalMoves:
 
     def test_returns_true_for_extra_turn_when_looping_around(self, mancala):
         assert mancala.get_legal_moves(1) == [3, 5]
+
+class TestClearsBoardIfGameIsEndedEarly:
+    @pytest.fixture(scope='function')
+    def mancala(self):
+        return MancalaBoard(0, 0, [[0, 0, 1, 0, 4, 0], [0, 0, 0, 1, 0, 0], [23, 19]])
+
+    def test_clears_board_when_game_is_ended_early(self, mancala):
+        mancala.clear_board()
+        assert mancala.game_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [28, 20]]

@@ -36,6 +36,12 @@ class MancalaBoard():
         if self.game_log[-1][player_number][pot_number] is 0:
             raise ValueError(f"Selected pot {pot_number + 1} must not be empty")
 
+    def clear_board(self):
+        player_one_clear = False
+        self.clear_remaining_stones(player_one_clear)
+        player_one_clear = True
+        self.clear_remaining_stones(player_one_clear)
+
     def clear_remaining_stones(self, player_one_already_clear):
         player_to_clear = 1 if player_one_already_clear else 0
 
