@@ -9,15 +9,17 @@ class Game():
     def play(self, current_player):
         player = self.players[current_player - 1]
         take_turn = player.play()
-        game_over = self.game.game_over()
 
-        if game_over is True:
+        if self.game.game_over() is True:
             return self.game.game_log
 
         if take_turn is True:
             # Player takes an extra turn
             player.play()
+            if self.game.game_over() is True:
+                return self.game.game_log
 
         # Switch players and continue
         opposite_player = self.switch_players(current_player)
+
         return self.play(opposite_player)

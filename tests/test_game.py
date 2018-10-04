@@ -43,8 +43,8 @@ class TestGamePlay:
         mock_mancala_board = mock.Mock()
         mock_player_one = mock.Mock()
         mock_player_two = mock.Mock()
-        mock_mancala_board.game_over.side_effect = [False, True]
-        mock_player_one.play.side_effect = [True, False]
+        mock_mancala_board.game_over.side_effect = [False, False, True]
+        mock_player_one.play.side_effect = [False, False]
         mock_player_two.play.side_effect = [False]
 
         game = Game(mock_mancala_board, mock_player_one, mock_player_two)
@@ -65,3 +65,17 @@ class TestGamePlay:
 
         game = Game(mock_mancala_board, mock_player_one, mock_player_two)
         assert game.play(current_player) == expected_game_log
+
+    def test_does_not_switch_players_when_game_over_occurs_on_a_players_extra_turn(self):
+        expected_game_log = "[[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [23, 19]]"
+        current_player = 1
+        mock_mancala_board = mock.Mock()
+        mock_player_one = mock.Mock()
+        mock_player_two = mock.Mock()
+        mock_mancala_board.game_log = expected_game_log
+        mock_mancala_board.game_over.side_effect = [False, True]
+        mock_player_one.play.side_effect = [True, False]
+
+        game = Game(mock_mancala_board, mock_player_one, mock_player_two)
+        game.play(current_player)
+        assert not mock_player_two.play.called
