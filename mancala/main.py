@@ -1,23 +1,32 @@
 import csv
+import random
 
 from mancala_board import MancalaBoard
 from game import Game
 from player import Player
 
-def init():
-    mancala_board = MancalaBoard(6,4)
-    player_one_type = "random"
-    player_two_type = "random"
-    game = Game(
-        mancala_board,
-        Player(1, player_one_type, mancala_board),
-        Player(2, player_two_type, mancala_board)
-    )
-    first_player = 1
-    game_log = game.play(first_player)
 
-    with open('mancala_game_data.csv', 'w', newline='') as csvfile:
-        filewriter = csv.writer(csvfile)
-        filewriter.writerow(game_log)
+def init():
+    pots = 6
+    stones = 4
+    first_player = 1
+    player_types = ["random", "rightpot"]
+    # player_types = ["random", "rightpot", "minimax", "alphabeta"]
+
+    for lp in range(10):
+        mancala_board = MancalaBoard(pots, stones)
+        player_one_type = random.choice(player_types)
+        player_two_type = random.choice(player_types)
+        game = Game(
+            mancala_board,
+            Player(1, player_one_type, mancala_board),
+            Player(2, player_two_type, mancala_board)
+        )
+        game_log = game.play(first_player)
+
+        with open('mancala_game_data.csv', 'a', newline='') as csvfile:
+            filewriter = csv.writer(csvfile)
+            filewriter.writerow(game_log)
+
 
 init()
