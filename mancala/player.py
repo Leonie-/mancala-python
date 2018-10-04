@@ -14,6 +14,7 @@ class Player():
         return 2 if current_player == 1 else 1
 
     def pick_random(self):
+        print(f"Moves for Player {self.player_number}: {self.mancala.get_legal_moves(self.player_number)}")
         return random.choice(self.mancala.get_legal_moves(self.player_number))
 
     def calculate_winner(self, board_state):
@@ -119,7 +120,7 @@ class Player():
                     best_move = move
 
                 if alpha >= beta: # Pruning
-                    print(f"PRUNE")
+                    print("PRUNE")
                     break
 
             else: #is minimising node
@@ -130,12 +131,12 @@ class Player():
                     best_move = move
 
                 if beta <= alpha:  # Pruning
-                    print(f"PRUNE")
+                    print("PRUNE")
                     break
 
-            print(f"Alpha: {alpha}, Beta: {beta}")
-            best_score = alpha if phasing_player == self.player_number else beta
-            return [best_score, best_move]
+        print(f"{'Max' if phasing_player == self.player_number else 'Min'} Alpha: {alpha}, Beta: {beta}")
+        best_score = alpha if phasing_player == self.player_number else beta
+        return [best_score, best_move]
 
 
     def pick_minimax_alpha_beta(self):
