@@ -14,7 +14,6 @@ class Player():
         return 2 if current_player == 1 else 1
 
     def pick_random(self):
-        print(f"Moves for Player {self.player_number}: {self.mancala.get_legal_moves(self.player_number)}")
         return random.choice(self.mancala.get_legal_moves(self.player_number))
 
     def calculate_winner(self, board_state):
@@ -31,8 +30,6 @@ class Player():
     def minimaxScore(self, game_instance, depth, game_over):
         last_move = game_instance.game_log[-1]
         winner = game_instance.winning_player if game_over else self.calculate_winner(last_move)
-
-        # Could you score this with difference between scores instead?
 
         if winner is self.player_number:
             # print(f"Current player wins: {game_instance.game_log[-1]}")
@@ -109,8 +106,6 @@ class Player():
         for index, move in enumerate(legal_moves, start=0):
             possible_game = MancalaBoard(6, 6, last_move)
             take_another_turn = possible_game.play(phasing_player, move)
-            print(f"index {index} depth {depth}")
-            print(f"Alpha: {alpha}, Beta: {beta}")
             # See what the next player will do
             if phasing_player == self.player_number: #is maximising node
                 result = self.minimax_alpha_beta(possible_game, next_player, alpha, beta, move, depth)[0]
@@ -120,7 +115,6 @@ class Player():
                     best_move = move
 
                 if alpha >= beta: # Pruning
-                    print("PRUNE")
                     break
 
             else: #is minimising node
@@ -131,10 +125,8 @@ class Player():
                     best_move = move
 
                 if beta <= alpha:  # Pruning
-                    print("PRUNE")
                     break
 
-        print(f"{'Max' if phasing_player == self.player_number else 'Min'} Alpha: {alpha}, Beta: {beta}")
         best_score = alpha if phasing_player == self.player_number else beta
         return [best_score, best_move]
 
@@ -148,6 +140,15 @@ class Player():
     def pick_right_pot(self):
          return self.mancala.get_legal_moves(self.player_number)[-1]
 
+    def pick_first_pot_with_most_stones(self):
+        last_move_for_player = self.mancala.game_log[-1][self.player_number - 1]
+        max_stones = max(last_move_for_player)
+        return last_move_for_player.index(max_stones)
+
+    def pick_first_pot_with_least_stones(self):
+        last_move_for_player = self.mancala.game_log[-1][self.player_number - 1]
+        return min(i for i in last_move_for_player if i > 0)
+
     def play(self):
         pot = self.pick_random()
 
@@ -159,6 +160,12 @@ class Player():
 
         if self.player_type == "rightpot":
             pot = self.pick_right_pot()
+
+        if self.player_type == "firstpotwithleast":
+            pot = self.pick_first_pot_with_least_stones()
+
+        if self.player_type == "firstpotwithmost":
+            pot = self.pick_first_pot_with_most_stones()
 
         print(f"Pot chosen for play: {pot}")
 
