@@ -65,6 +65,44 @@ class TestPotWithMostStonesPlayer:
         player.play()
         mancala_mock.play.assert_called_with(1, 2)
 
+class TestTakeAnotherTurnPlayer:
+
+    def test_picks_the_pot_which_gives_an_extra_turn_from_legal_moves_available(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0, 4, 19, 3, 16, 5], [0, 0, 3, 5, 1, 0], [3, 16]]]
+        mancala_mock.get_legal_moves.return_value = [2, 3, 4, 5, 6]
+        player = Player(1, "takeanotherturn", mancala_mock)
+        player.play()
+        mancala_mock.play.assert_called_with(1, 4)
+
+    @mock.patch('random.choice', return_value=6)
+    def test_picks_random_pot_if_no_legal_moves_give_extra_turn_(self, choice_mock):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0, 4, 19, 0, 1, 5], [4, 0, 3, 0, 16, 0], [3, 16]]]
+        mancala_mock.get_legal_moves.return_value = [2, 3, 5, 6]
+        player = Player(1, "takeanotherturn", mancala_mock)
+        player.play()
+        mancala_mock.play.assert_called_with(1, 6)
+
+class TestAvoidAnotherTurnPlayer:
+
+    def test_picks_the_pot_which_does_not_give_an_extra_turn_from_legal_moves_available(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0, 5, 19, 3, 2, 1], [0, 0, 3, 5, 1, 0], [3, 16]]]
+        mancala_mock.get_legal_moves.return_value = [2, 3, 4, 5, 6]
+        player = Player(1, "avoidanotherturn", mancala_mock)
+        player.play()
+        mancala_mock.play.assert_called_with(1, 3)
+
+    @mock.patch('random.choice', return_value=1)
+    def test_picks_random_pot_if_all_legal_moves_give_extra_turn_(self, choice_mock):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log = [[[0, 5, 4, 3, 2, 1], [4, 0, 3, 0, 16, 0], [3, 16]]]
+        mancala_mock.get_legal_moves.return_value = [2, 3, 5, 6]
+        player = Player(1, "avoidanotherturn", mancala_mock)
+        player.play()
+        mancala_mock.play.assert_called_with(1, 1)
+
 class TestMiniMaxScoreAtLeaf:
 
     def test_minimax_scoring_when_leaf_is_reached_and_current_player_wins(self):

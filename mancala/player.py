@@ -149,6 +149,16 @@ class Player():
         last_move_for_player = self.mancala.game_log[-1][self.player_number - 1]
         return min(i for i in last_move_for_player if i > 0)
 
+    def pick_pot_with_extra_turn(self, extra_turn_setting):
+        last_move = self.mancala.game_log[-1]
+        legal_moves = self.mancala.get_legal_moves(self.player_number - 1)
+        for move in legal_moves:
+            possible_game = MancalaBoard(6, 6, last_move)
+            take_another_turn = possible_game.play(self.player_number, move)
+            if take_another_turn is extra_turn_setting:
+                return move
+        return self.pick_random()
+
     def play(self):
         pot = self.pick_random()
 
@@ -166,6 +176,12 @@ class Player():
 
         if self.player_type == "potwithmost":
             pot = self.pick_pot_with_most_stones()
+
+        if self.player_type == "takeanotherturn":
+            pot = self.pick_pot_with_extra_turn(True)
+
+        if self.player_type == "avoidanotherturn":
+            pot = self.pick_pot_with_extra_turn(False)
 
         print(f"Pot chosen for play: {pot}")
 
