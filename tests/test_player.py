@@ -45,23 +45,23 @@ class TestRightPotPlayer:
         player.play()
         mancala_mock.play.assert_called_with(1, 6)
 
-class TestFirstPotWithLeastStonesPlayer:
+class TestPotWithLeastStonesPlayer:
 
     def test_picks_the_first_pot_with_least_stones_from_legal_moves_available(self):
         mancala_mock = mock.Mock()
         mancala_mock.game_log = [[[0, 13, 21, 0, 5, 5], [0, 0, 0, 0, 0, 0], [14, 6]]]
         mancala_mock.get_legal_moves.return_value = [2, 3, 5, 6]
-        player = Player(1, "firstpotwithleast", mancala_mock)
+        player = Player(1, "potwithleast", mancala_mock)
         player.play()
         mancala_mock.play.assert_called_with(1, 5)
 
-class TestFirstPotWithMostStonesPlayer:
+class TestPotWithMostStonesPlayer:
 
     def test_picks_the_first_pot_with_most_stones_from_legal_moves_available(self):
         mancala_mock = mock.Mock()
         mancala_mock.game_log = [[[0, 13, 21, 0, 5, 5], [0, 0, 0, 0, 0, 0], [14, 6]]]
         mancala_mock.get_legal_moves.return_value = [2, 3, 5, 6]
-        player = Player(1, "firstpotwithmost", mancala_mock)
+        player = Player(1, "potwithmost", mancala_mock)
         player.play()
         mancala_mock.play.assert_called_with(1, 2)
 

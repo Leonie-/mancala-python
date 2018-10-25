@@ -140,12 +140,12 @@ class Player():
     def pick_right_pot(self):
          return self.mancala.get_legal_moves(self.player_number)[-1]
 
-    def pick_first_pot_with_most_stones(self):
+    def pick_pot_with_most_stones(self):
         last_move_for_player = self.mancala.game_log[-1][self.player_number - 1]
         max_stones = max(last_move_for_player)
         return last_move_for_player.index(max_stones)
 
-    def pick_first_pot_with_least_stones(self):
+    def pick_pot_with_least_stones(self):
         last_move_for_player = self.mancala.game_log[-1][self.player_number - 1]
         return min(i for i in last_move_for_player if i > 0)
 
@@ -161,11 +161,11 @@ class Player():
         if self.player_type == "rightpot":
             pot = self.pick_right_pot()
 
-        if self.player_type == "firstpotwithleast":
-            pot = self.pick_first_pot_with_least_stones()
+        if self.player_type == "potwithleast":
+            pot = self.pick_pot_with_least_stones()
 
-        if self.player_type == "firstpotwithmost":
-            pot = self.pick_first_pot_with_most_stones()
+        if self.player_type == "potwithmost":
+            pot = self.pick_pot_with_most_stones()
 
         print(f"Pot chosen for play: {pot}")
 
