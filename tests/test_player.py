@@ -55,6 +55,14 @@ class TestPotWithLeastStonesPlayer:
         player.play()
         mancala_mock.play.assert_called_with(1, 5)
 
+    def test_picks_the_first_pot_with_least_stones_from_legal_moves_available_when_game_has_not_ended(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log =[[[5, 4, 4, 0, 5, 5], [5, 4, 4, 0, 5, 5], [1, 1]]]
+        mancala_mock.get_legal_moves.return_value = [1, 2, 3, 5, 6]
+        player = Player(1, "potwithleast", mancala_mock)
+        player.play()
+        mancala_mock.play.assert_called_with(1, 2)
+
 class TestPotWithMostStonesPlayer:
 
     def test_picks_the_first_pot_with_most_stones_from_legal_moves_available(self):
@@ -63,7 +71,15 @@ class TestPotWithMostStonesPlayer:
         mancala_mock.get_legal_moves.return_value = [2, 3, 5, 6]
         player = Player(1, "potwithmost", mancala_mock)
         player.play()
-        mancala_mock.play.assert_called_with(1, 2)
+        mancala_mock.play.assert_called_with(1, 3)
+
+    def test_picks_the_first_pot_with_most_stones_from_legal_moves_available_when_game_has_not_ended(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.game_log =[[[5, 4, 4, 0, 5, 5], [5, 4, 4, 0, 5, 5], [1, 1]]]
+        mancala_mock.get_legal_moves.return_value = [1, 2, 3, 5, 6]
+        player = Player(1, "potwithmost", mancala_mock)
+        player.play()
+        mancala_mock.play.assert_called_with(1, 1)
 
 class TestTakeAnotherTurnPlayer:
 

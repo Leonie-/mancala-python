@@ -142,21 +142,23 @@ class Player():
 
     def pick_pot_with_most_stones(self):
         last_move_for_player = self.mancala.game_log[-1][self.player_number - 1]
-        max_stones = max(last_move_for_player)
-        return last_move_for_player.index(max_stones)
+        pot_with_most_stones = max(pot for index, pot in enumerate(last_move_for_player) if pot > 0)
+        return last_move_for_player.index(pot_with_most_stones) + 1
 
     def pick_pot_with_least_stones(self):
         last_move_for_player = self.mancala.game_log[-1][self.player_number - 1]
-        return min(i for i in last_move_for_player if i > 0)
+        pot_with_least_stones = min(pot for index, pot in enumerate(last_move_for_player) if pot > 0)
+        return last_move_for_player.index(pot_with_least_stones) + 1
 
     def pick_pot_with_extra_turn(self, extra_turn_setting):
         last_move = self.mancala.game_log[-1]
-        legal_moves = self.mancala.get_legal_moves(self.player_number - 1)
+        legal_moves = self.mancala.get_legal_moves(self.player_number)
         for move in legal_moves:
             possible_game = MancalaBoard(6, 6, last_move)
             take_another_turn = possible_game.play(self.player_number, move)
             if take_another_turn is extra_turn_setting:
                 return move
+
         return self.pick_random()
 
     def play(self):
