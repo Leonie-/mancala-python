@@ -11,8 +11,8 @@ class MancalaBoard():
         self.player_turn_number = 0
         self.winning_player = None
         self.game_is_over = False
-        self.game_log = [ default_state ] if initial_state is None else [ initial_state ]
-        # print(self.game_log)
+        self.game_board_log = [ default_state ] if initial_state is None else [ initial_state ]
+        # print(self.game_board_log)
 
     def check_player_turn_number(self, player_number):
         if player_number != self.current_player:
@@ -29,11 +29,11 @@ class MancalaBoard():
             raise Exception(f"Player {player_number + 1} cannot take another turn")
 
         try:
-            self.game_log[-1][player_number][pot_number]
+            self.game_board_log[-1][player_number][pot_number]
         except IndexError as error:
             raise Exception(f"A valid pot must be selected for play") from error
 
-        if self.game_log[-1][player_number][pot_number] is 0:
+        if self.game_board_log[-1][player_number][pot_number] is 0:
             raise ValueError(f"Selected pot {pot_number + 1} must not be empty")
 
     def clear_board(self):
@@ -46,9 +46,9 @@ class MancalaBoard():
         player_to_clear = 1 if player_one_already_clear else 0
 
         # Add sum of remaining stones to store
-        self.game_log[-1][2][player_to_clear] += sum(self.game_log[-1][player_to_clear])
+        self.game_board_log[-1][2][player_to_clear] += sum(self.game_board_log[-1][player_to_clear])
         # Clear board
-        self.game_log[-1][player_to_clear] = [0 if x == 1 else 0 for x in self.game_log[-1][player_to_clear]]
+        self.game_board_log[-1][player_to_clear] = [0 if x == 1 else 0 for x in self.game_board_log[-1][player_to_clear]]
 
     def check_for_game_over(self, current_turn):
         player_one_clear = all(pot == 0 for pot in current_turn[0])
@@ -104,7 +104,7 @@ class MancalaBoard():
         return [new_turn, take_another_turn]
 
     def generate_turn(self, player_number, starting_pot):
-        new_turn = copy.deepcopy(self.game_log[-1])
+        new_turn = copy.deepcopy(self.game_board_log[-1])
         stones_to_sow = copy.deepcopy(new_turn[player_number][starting_pot])
 
         new_turn[player_number][starting_pot] = 0
@@ -127,7 +127,8 @@ class MancalaBoard():
         self.validate_turn(player_number, pot_number)
 
         turn = self.generate_turn(player_number, pot_number);
-        self.game_log.append(turn[0])
+        self.game_board_log.append(turn[0])
+        # self.game_state_log.append()
 
         self.check_for_game_over(turn[0])
 
@@ -139,7 +140,7 @@ class MancalaBoard():
     def get_legal_moves(self, player_number):
         player_number = player_number - 1
         legal_moves = []
-        for i, pot in enumerate(self.game_log[-1][player_number]):
+        for i, pot in enumerate(self.game_board_log[-1][player_number]):
             if pot != 0:
                 legal_moves.append(i + 1)
         return legal_moves

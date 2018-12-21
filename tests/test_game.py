@@ -53,18 +53,20 @@ class TestGamePlay:
         assert mock_player_one.play.call_count == 2
         assert mock_player_two.play.call_count == 1
 
-    def test_returns_the_game_log_on_game_over(self):
-        expected_game_log = "[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]"
+    def test_returns_the_game_logs_on_game_over(self):
+        expected_game_board_log = "[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]"
+        expected_game_state_log = "game state log"
         current_player = 1
         mock_mancala_board = mock.Mock()
         mock_player_one = mock.Mock()
         mock_player_two = mock.Mock()
         mock_mancala_board.game_over.return_value = True
-        mock_mancala_board.game_log = expected_game_log
+        mock_mancala_board.game_board_log = expected_game_board_log
+        mock_mancala_board.game_state_log = expected_game_state_log
         mock_player_one.play.return_value = False
 
         game = Game(mock_mancala_board, mock_player_one, mock_player_two)
-        assert game.play(current_player) == expected_game_log
+        assert game.play(current_player) == [expected_game_board_log, expected_game_state_log]
 
     def test_does_not_switch_players_when_game_over_occurs_on_a_players_extra_turn(self):
         expected_game_log = "[[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [23, 19]]"

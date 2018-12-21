@@ -11,13 +11,13 @@ class Game():
         take_turn = player.play()
 
         if self.game.game_over() is True:
-            return self.game.game_log
+            return [self.game.game_board_log, self.game.game_state_log]
 
         if take_turn is True:
             # Player takes an extra turn
             player.play()
             if self.game.game_over() is True:
-                return self.game.game_log
+                return [self.game.game_board_log, self.game.game_state_log]
 
         # Switch players and continue
         opposite_player = self.switch_players(current_player)

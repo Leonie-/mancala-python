@@ -8,8 +8,8 @@ class TestInitialGameStateDefault:
     def mancala(self):
         return MancalaBoard(6, 4)
 
-    def test_returns_game_log(self, mancala):
-        assert mancala.game_log == [
+    def test_returns_game_board_log(self, mancala):
+        assert mancala.game_board_log == [
             [[4,4,4,4,4,4], [4,4,4,4,4,4], [0,0]]
         ]
 
@@ -19,8 +19,8 @@ class TestInitialGameStateProvided:
     def mancala(self):
         return MancalaBoard(6, 4, [[0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [27, 19]])
 
-    def test_returns_game_log_with_initial_state_when_provided(self, mancala):
-        assert mancala.game_log == [
+    def test_returns_game_board_log_with_initial_state_when_provided(self, mancala):
+        assert mancala.game_board_log == [
             [[0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [27, 19]]
         ]
 
@@ -94,38 +94,38 @@ class TestGamePlay:
         assert mancala.current_player == 2
         assert mancala.player_turn_number == 1
 
-    def test_updates_game_log_when_player_one_has_taken_a_move_on_pot_3(self, mancala):
+    def test_updates_game_board_log_when_player_one_has_taken_a_move_on_pot_3(self, mancala):
         player_number = 1
         pot_number = 3
         mancala.play(player_number, pot_number)
-        assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
-        assert mancala.game_log[1] == [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]]
+        assert mancala.game_board_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
+        assert mancala.game_board_log[1] == [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]]
 
-    def test_updates_game_log_when_player_two_has_taken_a_move_on_pot_4(self, mancala):
+    def test_updates_game_board_log_when_player_two_has_taken_a_move_on_pot_4(self, mancala):
         player_number = 2
         pot_number = 4
         mancala.play(player_number, pot_number)
 
-        assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
-        assert mancala.game_log[1] == [[5, 4, 4, 4, 4, 4], [4, 4, 4, 0, 5, 5], [0, 1]]
+        assert mancala.game_board_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
+        assert mancala.game_board_log[1] == [[5, 4, 4, 4, 4, 4], [4, 4, 4, 0, 5, 5], [0, 1]]
 
-    def test_updates_game_log_when_a_turn_loops_around_to_the_other_side_of_the_board(self, mancala):
+    def test_updates_game_board_log_when_a_turn_loops_around_to_the_other_side_of_the_board(self, mancala):
         player_number = 1
         pot_number = 6
         mancala.play(player_number, pot_number)
 
-        assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
-        assert mancala.game_log[1] == [[4, 4, 4, 4, 4, 0], [5, 5, 5, 4, 4, 4], [1, 0]]
+        assert mancala.game_board_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
+        assert mancala.game_board_log[1] == [[4, 4, 4, 4, 4, 0], [5, 5, 5, 4, 4, 4], [1, 0]]
 
-    def test_updates_game_log_with_opposite_capture_when_a_turn_ends_in_the_current_players_empty_pot(self, mancala):
+    def test_updates_game_board_log_with_opposite_capture_when_a_turn_ends_in_the_current_players_empty_pot(self, mancala):
         mancala.play(1, 6)
         mancala.play(2, 2)
         mancala.play(1, 2)
 
-        assert mancala.game_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
-        assert mancala.game_log[1] == [[4, 4, 4, 4, 4, 0], [5, 5, 5, 4, 4, 4], [1, 0]]
-        assert mancala.game_log[2] == [[4, 4, 4, 4, 4, 0], [5, 0, 6, 5, 5, 5], [1, 1]]
-        assert mancala.game_log[3] == [[4, 0, 5, 5, 5, 0], [0, 0, 6, 5, 5, 5], [7, 1]]
+        assert mancala.game_board_log[0] == [[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]]
+        assert mancala.game_board_log[1] == [[4, 4, 4, 4, 4, 0], [5, 5, 5, 4, 4, 4], [1, 0]]
+        assert mancala.game_board_log[2] == [[4, 4, 4, 4, 4, 0], [5, 0, 6, 5, 5, 5], [1, 1]]
+        assert mancala.game_board_log[3] == [[4, 0, 5, 5, 5, 0], [0, 0, 6, 5, 5, 5], [7, 1]]
 
     def test_game_over_returns_false_if_game_is_not_over(self, mancala):
         mancala.play(1, 1)
@@ -161,7 +161,7 @@ class TestGameEndPlayerOneWin:
     def test_game_over_is_true_and_winning_player_is_set_at_game_end(self, mancala):
         assert mancala.game_over() == False
         mancala.play(2, 4)
-        assert mancala.game_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [28, 20]]
+        assert mancala.game_board_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [28, 20]]
         assert mancala.game_over() == True
         assert mancala.winning_player == 1
 
@@ -172,10 +172,10 @@ class TestGameEndPlayerTwoWin:
         return MancalaBoard(6, 4, [[0, 0, 0, 0, 5, 0], [1, 0, 0, 0, 0, 0], [20, 20]])
 
     def test_game_over_is_true_and_winning_player_is_set_at_game_end(self, mancala):
-        assert mancala.game_log[-1] == [[0, 0, 0, 0, 5, 0], [1, 0, 0, 0, 0, 0], [20, 20]]
+        assert mancala.game_board_log[-1] == [[0, 0, 0, 0, 5, 0], [1, 0, 0, 0, 0, 0], [20, 20]]
         assert mancala.game_over() == False
         mancala.play(2, 1)
-        assert mancala.game_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [20, 26]]
+        assert mancala.game_board_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [20, 26]]
         assert mancala.game_over() == True
         assert mancala.winning_player == 2
 
@@ -188,7 +188,7 @@ class TestGameEndTidyUp:
     def test_game_over_is_true_and_all_remaining_stones_are_moved_into_the_store(self, mancala):
         assert mancala.game_over() == False
         mancala.play(2, 4)
-        assert mancala.game_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [28, 20]]
+        assert mancala.game_board_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [28, 20]]
         assert mancala.game_over() == True
         assert mancala.winning_player == 1
 
@@ -199,10 +199,10 @@ class TestGameEndDraw:
         return MancalaBoard(6, 10, [[0, 0, 0, 7, 0, 0], [0, 0, 0, 0, 1, 0], [23, 29]])
 
     def test_game_over_is_true_and_winning_player_is_0_if_draw(self, mancala):
-        assert mancala.game_log[0] == [[0, 0, 0, 7, 0, 0], [0, 0, 0, 0, 1, 0], [23, 29]]
+        assert mancala.game_board_log[0] == [[0, 0, 0, 7, 0, 0], [0, 0, 0, 0, 1, 0], [23, 29]]
         mancala.play(2, 5)
 
-        assert mancala.game_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [30, 30]]
+        assert mancala.game_board_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [30, 30]]
         assert mancala.game_over() == True
         assert mancala.winning_player == 0
 
@@ -212,13 +212,13 @@ class TestGamePlayWithLooping:
     def mancala(self):
         return MancalaBoard(6, 10)
 
-    def test_updates_game_log_when_a_turn_loops_around_and_does_not_sow_in_opponents_store(self, mancala):
+    def test_updates_game_board_log_when_a_turn_loops_around_and_does_not_sow_in_opponents_store(self, mancala):
         player_number = 1
         pot_number = 5
         mancala.play(player_number, pot_number)
 
-        assert mancala.game_log[0] == [[10, 10, 10, 10, 10, 10], [10, 10, 10, 10, 10, 10], [0, 0]]
-        assert mancala.game_log[1] == [[11, 11, 10, 10, 0, 11], [11, 11, 11, 11, 11, 11], [1, 0]]
+        assert mancala.game_board_log[0] == [[10, 10, 10, 10, 10, 10], [10, 10, 10, 10, 10, 10], [0, 0]]
+        assert mancala.game_board_log[1] == [[11, 11, 10, 10, 0, 11], [11, 11, 11, 11, 11, 11], [1, 0]]
 
 class TestExtraTurnWhenLooping:
     @pytest.fixture(scope='function')
@@ -243,4 +243,4 @@ class TestClearsBoardIfGameIsEndedEarly:
 
     def test_clears_board_when_game_is_ended_early(self, mancala):
         mancala.clear_board()
-        assert mancala.game_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [28, 20]]
+        assert mancala.game_board_log[-1] == [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [28, 20]]
