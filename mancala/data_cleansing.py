@@ -10,17 +10,19 @@ def init():
     pots = 6
     stones = 4
     first_player = 1
-    player_types = ["random", "rightpot"]
-    # player_types = ["random", "rightpot", "minimax", "alphabeta"]
+    player_types = ["minimax", "alphabeta", "random", "rightpot", "potwithleast", "potwithmost", "takeanotherturn", "avoidanotherturn"]
 
-    for lp in range(10):
+    for lp in range(4800):
+        print(f"ITERATION {lp}")
         mancala_board = MancalaBoard(pots, stones)
         player_one_type = random.choice(player_types)
         player_two_type = random.choice(player_types)
+        max_lookahead = 6
+        print(f"player_one_type {player_one_type}, player_two_type {player_two_type}")
         game = Game(
             mancala_board,
-            Player(1, player_one_type, mancala_board),
-            Player(2, player_two_type, mancala_board)
+            Player(1, player_one_type, mancala_board, max_lookahead),
+            Player(2, player_two_type, mancala_board, max_lookahead)
         )
         game_log = game.play(first_player)
 
