@@ -1,5 +1,7 @@
 import copy
 
+import game_state
+
 class MancalaBoard():
     def __init__(self, pots, stones, initial_state = None):
         default_state = [
@@ -12,6 +14,7 @@ class MancalaBoard():
         self.winning_player = None
         self.game_is_over = False
         self.game_board_log = [ default_state ] if initial_state is None else [ initial_state ]
+        self.game_state_log = []
         # print(self.game_board_log)
 
     def check_player_turn_number(self, player_number):
@@ -126,16 +129,27 @@ class MancalaBoard():
         pot_number = pot_number - 1;
         self.validate_turn(player_number, pot_number)
 
-        turn = self.generate_turn(player_number, pot_number);
+        turn = self.generate_turn(player_number, pot_number)
         self.game_board_log.append(turn[0])
-        # self.game_state_log.append()
 
-        self.check_for_game_over(turn[0])
+        is_game_over =  self.check_for_game_over(turn[0])
+        gets_extra_turn = self.check_for_extra_turn(turn[1])
 
-        if self.game_is_over == True:
+        # if len(self.game_board_log) > 1: # If not the initial board set up, add state
+        #     new_game_state = game_state.get_game_state(
+        #         player_number,
+        #         pot_number,
+        #         self.game_board_log,
+        #         gets_extra_turn,
+        #         is_game_over
+        #     )
+        #     print(f"GAME STATE: {new_game_state}")
+        #     self.game_state_log.append(new_game_state)
+
+        if is_game_over == True:
             return False
         else:
-            return self.check_for_extra_turn(turn[1])
+            return gets_extra_turn
 
     def get_legal_moves(self, player_number):
         player_number = player_number - 1
