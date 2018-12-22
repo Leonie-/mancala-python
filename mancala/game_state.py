@@ -15,6 +15,7 @@
 # Current score
 # Number of Kroos (array)
 
+# AWALE SPECIFIC
 # Pots threatened at start (array)
 # Pots threatened at end (array)
 # Pots attacking at start (array)
