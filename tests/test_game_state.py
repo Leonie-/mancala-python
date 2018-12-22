@@ -204,6 +204,26 @@ class TestGameState:
         result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
         assert result["current_winning_player"] == "draw"
 
+    def test_game_state_returns_current_winning_player_from_whole_board_analysis(self):
+        player_number = 1
+        pot_number = 6
+        board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 40, 0], [23, 14]],
+                     [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 40, 0], [24, 14]]]
+        gets_extra_turn = False
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["current_winning_player_whole_board"] == 2
+
+    def test_game_state_returns_current_winning_player_from_whole_board_analysis_when_draw(self):
+        player_number = 1
+        pot_number = 6
+        board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 40, 0], [23, 14]],
+                     [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 9, 0], [24, 14]]]
+        gets_extra_turn = False
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["current_winning_player_whole_board"] == "draw"
+
     def test_game_state_returns_player_score(self):
         player_number = 1
         pot_number = 6
@@ -233,6 +253,16 @@ class TestGameState:
         is_game_over = False
         result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
         assert result["score_difference"] == 10
+
+    def test_game_state_returns_score_difference_from_whole_board(self):
+        player_number = 1
+        pot_number = 6
+        board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
+                     [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
+        gets_extra_turn = False
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["score_difference_whole_board"] == 5
 
     def test_game_state_returns_kroos_on_own_side_start(self):
         player_number = 1

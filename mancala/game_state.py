@@ -28,8 +28,18 @@ def get_current_winner(score):
         return "draw"
     return 1 if score[0] > score[1] else 2
 
+def get_current_winner_from_board(board):
+    player_one_score = sum(board[0], board[2][0])
+    player_two_score = sum(board[1], board[2][1])
+    return get_current_winner([player_one_score, player_two_score])
+
 def get_score_difference(score):
     return max(score) - min(score)
+
+def get_score_difference_whole_board(board):
+    player_one_score = sum(board[0], board[2][0])
+    player_two_score = sum(board[1], board[2][1])
+    return get_score_difference([player_one_score, player_two_score])
 
 def get_stones_captured(player_number, board_log):
     return board_log[-1][2][player_number - 1] - board_log[-2][2][player_number - 1]
@@ -76,9 +86,11 @@ def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over):
         "stones_sown_on_opponents_side": get_stones_sown_on_opponents_side(board_log, opponent),
         "current_score": board_log[-1][2],
         "current_winning_player": get_current_winner(board_log[-1][2]),
+        "current_winning_player_whole_board": get_current_winner_from_board(board_log[-1]),
         "player_score": board_log[-1][2][player -1],
         "opponent_score": board_log[-1][2][opponent - 1],
         "score_difference": get_score_difference(board_log[-1][2]),
+        "score_difference_whole_board": get_score_difference_whole_board(board_log[-1]),
         "kroos_on_own_side_start": get_kroos(player, board_log[-2]),
         "kroos_on_own_side_end": get_kroos(player, board_log[-1]),
         "kroos_on_opponents_side_start": get_kroos(opponent, board_log[-2]),
