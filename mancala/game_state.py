@@ -13,8 +13,6 @@
 # Seeds sown on native side
 # Seeds sown on opponent's side
 # Current score
-
-
 # Number of Kroos (array)
 
 # Pots threatened at start (array)
@@ -24,6 +22,11 @@
 
 def get_opposite_player(current_player):
     return 1 if current_player is 2 else 2
+
+def get_current_winner(score):
+    if score[0] == score[1]:
+        return "draw"
+    return 1 if score[0] > score[1] else 2
 
 def get_score_difference(score):
     return max(score) - min(score)
@@ -72,6 +75,7 @@ def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over):
         "stones_sown_on_own_side": get_stones_sown_on_own_side(board_log, player, pot_number),
         "stones_sown_on_opponents_side": get_stones_sown_on_opponents_side(board_log, opponent),
         "current_score": board_log[-1][2],
+        "current_winning_player": get_current_winner(board_log[-1][2]),
         "player_score": board_log[-1][2][player -1],
         "opponent_score": board_log[-1][2][opponent - 1],
         "score_difference": get_score_difference(board_log[-1][2]),
