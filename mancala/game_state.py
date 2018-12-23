@@ -70,6 +70,7 @@ def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over):
     opponent = get_opposite_player(player)
     board_at_start = board_log[-2]
     board_at_end = board_log[-1]
+    score = board_at_end[2]
     return {
         "current_player": player,
         "pot_played": pot_number,
@@ -87,12 +88,12 @@ def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over):
         "moves_available_on_opponents_side_at_end": get_non_empty_pots(opponent, board_at_end),
         "stones_sown_on_own_side": get_stones_sown_on_own_side(board_log, player, pot_number),
         "stones_sown_on_opponents_side": get_stones_sown_on_opponents_side(board_log, opponent),
-        "current_score": board_at_end[2],
-        "current_winning_player": get_current_winner(board_at_end[2]),
+        "current_score": score,
+        "current_winning_player": get_current_winner(score),
         "current_winning_player_whole_board": get_current_winner_from_board(board_at_end),
-        "player_score": board_at_end[2][player -1],
-        "opponent_score": board_at_end[2][opponent - 1],
-        "score_difference": get_score_difference(board_at_end[2]),
+        "player_score": score[player -1],
+        "opponent_score": score[opponent - 1],
+        "score_difference": get_score_difference(score),
         "score_difference_whole_board": get_score_difference_whole_board(board_at_end),
         "kroos_on_own_side_start": get_kroos(player, board_at_start),
         "kroos_on_own_side_end": get_kroos(player, board_at_end),
