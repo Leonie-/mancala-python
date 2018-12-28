@@ -124,6 +124,46 @@ class TestGameState:
         assert result["moves_available_on_opponents_side_at_start"] == [2, 3, 5]
         assert result["moves_available_on_opponents_side_at_end"] == [1, 2, 3, 5]
 
+    def test_game_state_returns_stones_on_own_side_at_start(self):
+        player_number = 0
+        pot_number = 5
+        board_log = [[[5, 3, 16, 2, 0, 4], [0, 19, 3, 8, 0, 2], [16, 18]],
+                     [[5, 3, 16, 2, 0, 0], [1, 20, 4, 8, 0, 2], [17, 18]]]
+        gets_extra_turn = False
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["stones_on_own_side_at_start"] == 30
+
+    def test_game_state_returns_stones_on_own_side_at_end(self):
+        player_number = 0
+        pot_number = 5
+        board_log = [[[5, 3, 16, 2, 0, 4], [0, 19, 3, 8, 0, 2], [16, 18]],
+                     [[5, 3, 16, 2, 0, 0], [1, 20, 4, 8, 0, 2], [17, 18]]]
+        gets_extra_turn = False
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["stones_on_own_side_at_end"] == 26
+
+    def test_game_state_returns_stones_on_opponents_side_at_start(self):
+        player_number = 0
+        pot_number = 5
+        board_log = [[[5, 3, 16, 2, 0, 4], [0, 19, 3, 8, 0, 2], [16, 18]],
+                     [[5, 3, 16, 2, 0, 0], [1, 20, 4, 8, 0, 2], [17, 18]]]
+        gets_extra_turn = False
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["stones_on_opponents_side_at_start"] == 32
+
+    def test_game_state_returns_stones_on_opponents_side_at_end(self):
+        player_number = 0
+        pot_number = 5
+        board_log = [[[5, 3, 16, 2, 0, 4], [0, 19, 3, 8, 0, 2], [16, 18]],
+                     [[5, 3, 16, 2, 0, 0], [1, 20, 4, 8, 0, 2], [17, 18]]]
+        gets_extra_turn = False
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["stones_on_opponents_side_at_end"] == 35
+
     def test_game_state_returns_stones_sown_on_own_side(self):
         player_number = 0
         pot_number = 3

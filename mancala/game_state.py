@@ -50,6 +50,9 @@ def get_score_difference_whole_board(board):
 def get_stones_captured(player_number, board_log):
     return board_log[-1][2][player_number] - board_log[-2][2][player_number]
 
+def get_stones_on_board_for_player(board_log, player):
+    return sum(board_log[player])
+
 def get_empty_pots(player, turn):
     return [index + 1 for index, item in enumerate(turn[player]) if item == 0]
 
@@ -91,6 +94,10 @@ def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over):
         "moves_available_on_own_side_at_end": get_non_empty_pots(player, board_at_end),
         "moves_available_on_opponents_side_at_start": get_non_empty_pots(opponent, board_at_start),
         "moves_available_on_opponents_side_at_end": get_non_empty_pots(opponent, board_at_end),
+        "stones_on_own_side_at_start": get_stones_on_board_for_player(board_log[-2], player),
+        "stones_on_own_side_at_end": get_stones_on_board_for_player(board_log[-1], player),
+        "stones_on_opponents_side_at_start": get_stones_on_board_for_player(board_log[-2], opponent),
+        "stones_on_opponents_side_at_end": get_stones_on_board_for_player(board_log[-1], opponent),
         "stones_sown_on_own_side": get_stones_sown_on_own_side(board_log, player, pot_number),
         "stones_sown_on_opponents_side": get_stones_sown_on_opponents_side(board_log, opponent),
         "current_score": score,
