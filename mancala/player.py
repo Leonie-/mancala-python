@@ -28,17 +28,17 @@ class Player():
             return 0
 
     def minimaxScore(self, game_instance, depth, game_over):
-        last_move = game_instance.game_log[-1]
+        last_move = game_instance.game_board_log[-1]
         winner = game_instance.winning_player if game_over else self.calculate_winner(last_move)
 
         if winner is self.player_number:
-            # print(f"Current player wins: {game_instance.game_log[-1]}")
+            # print(f"Current player wins: {game_instance.game_board_log[-1]}")
             return 100 - depth
         elif winner is self.opposite_player_number:
-            # print(f"Opposite player wins: {game_instance.game_log[-1]}")
+            # print(f"Opposite player wins: {game_instance.game_board_log[-1]}")
             return 0 - depth
         else:
-            # print(f"Game draw: {game_instance.game_log[-1]}")
+            # print(f"Game draw: {game_instance.game_board_log[-1]}")
             return 50
 
     def minimax(self, game, phasing_player, depth = 0, move = None):
@@ -51,7 +51,7 @@ class Player():
         scores = []
         moves = []
         legal_moves = game.get_legal_moves(phasing_player)
-        last_move = game.game_log[-1]
+        last_move = game.game_board_log[-1]
         next_player = self.get_opposite_player(phasing_player)
 
         print(f"------Depth {depth} Player {phasing_player} Legal moves: {legal_moves}")
@@ -76,15 +76,15 @@ class Player():
             return [min(scores), moves[int(score_index)]]
 
     def minimax_alpha_beta_score(self, game_instance, depth, game_over):
-        last_move = game_instance.game_log[-1]
+        last_move = game_instance.game_board_log[-1]
         scores = last_move[2]
         winner = game_instance.winning_player if game_over else self.calculate_winner(last_move)
 
         if winner is self.player_number or winner is self.opposite_player_number:
-            print(f"Final board: {game_instance.game_log[-1]}, scores {scores}")
+            print(f"Final board: {game_instance.game_board_log[-1]}, scores {scores}")
             return scores[self.player_number - 1] - scores[self.opposite_player_number - 1] - depth
         else:
-            print(f"Game draw: {game_instance.game_log[-1]}")
+            print(f"Game draw: {game_instance.game_board_log[-1]}")
             return 0
 
     def minimax_alpha_beta(self, game, phasing_player, alpha = float("-inf"), beta = float("inf"), best_move = None, depth = -1):
@@ -98,7 +98,7 @@ class Player():
         depth += 1
 
         legal_moves = game.get_legal_moves(phasing_player)
-        last_move = game.game_log[-1]
+        last_move = game.game_board_log[-1]
         next_player = self.get_opposite_player(phasing_player)
 
         print(f"------Depth {depth} Player {phasing_player} Legal moves: {legal_moves}")
@@ -141,17 +141,17 @@ class Player():
          return self.mancala.get_legal_moves(self.player_number)[-1]
 
     def pick_pot_with_most_stones(self):
-        last_move_for_player = self.mancala.game_log[-1][self.player_number - 1]
+        last_move_for_player = self.mancala.game_board_log[-1][self.player_number - 1]
         pot_with_most_stones = max(pot for index, pot in enumerate(last_move_for_player) if pot > 0)
         return last_move_for_player.index(pot_with_most_stones) + 1
 
     def pick_pot_with_least_stones(self):
-        last_move_for_player = self.mancala.game_log[-1][self.player_number - 1]
+        last_move_for_player = self.mancala.game_board_log[-1][self.player_number - 1]
         pot_with_least_stones = min(pot for index, pot in enumerate(last_move_for_player) if pot > 0)
         return last_move_for_player.index(pot_with_least_stones) + 1
 
     def pick_pot_with_extra_turn(self, extra_turn_setting):
-        last_move = self.mancala.game_log[-1]
+        last_move = self.mancala.game_board_log[-1]
         legal_moves = self.mancala.get_legal_moves(self.player_number)
         for move in legal_moves:
             possible_game = MancalaBoard(6, 6, last_move)
