@@ -254,7 +254,7 @@ class TestGameState:
         result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
         assert result["opponent_score"] == 14
 
-    def test_game_state_returns_score_difference(self):
+    def test_game_state_returns_score_difference_at_start(self):
         player_number = 0
         pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
@@ -262,9 +262,9 @@ class TestGameState:
         gets_extra_turn = False
         is_game_over = False
         result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
-        assert result["score_difference"] == 10
+        assert result["score_difference_at_start"] == 9
 
-    def test_game_state_returns_score_difference_from_whole_board(self):
+    def test_game_state_returns_score_difference_at_start_from_whole_board(self):
         player_number = 0
         pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
@@ -272,7 +272,27 @@ class TestGameState:
         gets_extra_turn = False
         is_game_over = False
         result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
-        assert result["score_difference_whole_board"] == 5
+        assert result["score_difference_at_start_whole_board"] == 11
+
+    def test_game_state_returns_score_difference_at_end(self):
+        player_number = 0
+        pot_number = 5
+        board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
+                     [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
+        gets_extra_turn = False
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["score_difference_at_end"] == 10
+
+    def test_game_state_returns_score_difference_at_end_from_whole_board(self):
+        player_number = 0
+        pot_number = 5
+        board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
+                     [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
+        gets_extra_turn = False
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["score_difference_at_end_whole_board"] == 5
 
     def test_game_state_returns_kroos_on_own_side_start(self):
         player_number = 0
