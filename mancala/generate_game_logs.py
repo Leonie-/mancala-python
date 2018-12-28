@@ -12,7 +12,7 @@ def init():
     first_player = 1
     player_types = ["minimax", "alphabeta", "random", "rightpot", "potwithleast", "potwithmost", "takeanotherturn", "avoidanotherturn"]
 
-    for lp in range(5000):
+    for lp in range(1):
         print(f"ITERATION {lp}")
         mancala_board = MancalaBoard(pots, stones)
         player_one_type = random.choice(player_types)
@@ -24,11 +24,15 @@ def init():
             Player(1, player_one_type, mancala_board, max_lookahead),
             Player(2, player_two_type, mancala_board, max_lookahead)
         )
-        game_log = game.play(first_player)
+        game_logs = game.play(first_player)
+        print(f"game_logs : {game_logs[-1]}")
 
-        with open('mancala_game_data.csv', 'a', newline='') as csvfile:
-            filewriter = csv.writer(csvfile)
-            filewriter.writerow(game_log)
+        with open('kalah_game_board_data.csv', 'a', newline='') as game_board_csv, open('kalah_game_state_data.csv', 'a', newline='') as game_state_csv:
+            game_board_writer = csv.writer(game_board_csv)
+            game_board_writer.writerow(game_logs[0])
+
+            game_state_writer = csv.writer(game_state_csv)
+            game_state_writer.writerow(game_logs[1])
 
 
 init()
