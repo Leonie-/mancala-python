@@ -184,6 +184,16 @@ class TestGameState:
         result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
         assert result["current_score"] == [24, 14]
 
+    def test_game_state_returns_current_score_from_whole_board(self):
+        player_number = 0
+        pot_number = 6
+        board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
+                     [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
+        gets_extra_turn = False
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["current_score_whole_board"] == [34, 29]
+
     def test_game_state_returns_current_winning_player(self):
         player_number = 0
         pot_number = 6

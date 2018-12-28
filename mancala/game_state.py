@@ -24,6 +24,11 @@
 def get_opposite_player(current_player):
     return 0 if current_player is 1 else 1
 
+def get_current_score_from_board(board):
+    player_one_score = sum(board[0], board[2][0])
+    player_two_score = sum(board[1], board[2][1])
+    return [player_one_score, player_two_score]
+
 def get_current_winner(score):
     if score[0] == score[1]:
         return "draw"
@@ -89,6 +94,7 @@ def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over):
         "stones_sown_on_own_side": get_stones_sown_on_own_side(board_log, player, pot_number),
         "stones_sown_on_opponents_side": get_stones_sown_on_opponents_side(board_log, opponent),
         "current_score": score,
+        "current_score_whole_board": get_current_score_from_board(board_at_end),
         "current_winning_player": get_current_winner(score),
         "current_winning_player_whole_board": get_current_winner_from_board(board_at_end),
         "player_score": score[player],
