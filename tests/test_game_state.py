@@ -6,7 +6,7 @@ class TestGameState:
 
     def test_game_state_returns_current_player(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 2
         board_log = [[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]],
                      [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]],
                      [[4, 4, 0, 0, 6, 6], [5, 5, 4, 4, 4, 4], [2, 0]]]
@@ -14,11 +14,11 @@ class TestGameState:
         is_game_over = False
 
         result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
-        assert result["current_player"] == player_number
+        assert result["current_player"] == 1
 
     def test_game_state_returns_pot_played(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 2
         board_log = [[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]],
                      [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]],
                      [[4, 4, 0, 0, 6, 6], [5, 5, 4, 4, 4, 4], [2, 0]]]
@@ -26,11 +26,11 @@ class TestGameState:
         gets_extra_turn = False
         is_game_over = False
         result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
-        assert result["pot_played"] == 4
+        assert result["pot_played"] == 3
 
     def test_game_state_returns_turn_number(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 2
         board_log = [[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]],
                      [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]],
                      [[4, 4, 0, 0, 6, 6], [5, 5, 4, 4, 4, 4], [2, 0]]]
@@ -41,7 +41,7 @@ class TestGameState:
 
     def test_game_state_returns_stones_captured_for_player_one(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 2
         board_log = [[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]],
                      [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]],
                      [[4, 4, 0, 0, 6, 6], [5, 5, 4, 4, 4, 4], [2, 0]]]
@@ -52,7 +52,7 @@ class TestGameState:
 
     def test_game_state_returns_stones_captured_for_player_two(self):
         player_number = 1
-        pot_number = 1
+        pot_number = 0
         board_log = [[[2, 7, 3, 7, 8, 1], [13, 0, 3, 2, 1, 0], [14, 21]],
                      [[3, 8, 4, 8, 9, 0], [0, 1, 4, 3, 2, 1], [14, 24]]]
         gets_extra_turn = False
@@ -62,7 +62,7 @@ class TestGameState:
 
     def test_game_state_returns_extra_turn(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 2
         board_log = [[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]],
                      [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]]]
         gets_extra_turn = True
@@ -72,7 +72,7 @@ class TestGameState:
 
     def test_game_state_returns_if_final_turn(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 2
         board_log = [[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]],
                      [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]]]
         gets_extra_turn = True
@@ -82,7 +82,7 @@ class TestGameState:
 
     def test_game_state_returns_empty_pots_on_own_side(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 3
         board_log = [[[4, 0, 0, 4, 0, 4], [0, 4, 4, 0, 4, 0], [0, 0]],
                      [[4, 0, 0, 0, 1, 5], [1, 4, 4, 0, 4, 0], [1, 0]]]
         gets_extra_turn = False
@@ -93,7 +93,7 @@ class TestGameState:
 
     def test_game_state_returns_empty_pots_on_opponents_side(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 3
         board_log = [[[4, 0, 0, 4, 0, 4], [0, 4, 4, 0, 4, 0], [0, 0]],
                      [[4, 0, 0, 0, 1, 5], [1, 4, 4, 0, 4, 0], [1, 0]]]
         gets_extra_turn = False
@@ -104,7 +104,7 @@ class TestGameState:
 
     def test_game_state_returns_number_of_moves_available_on_own_side_at_start(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 3
         board_log = [[[4, 0, 0, 4, 0, 4], [0, 4, 4, 0, 4, 0], [0, 0]],
                      [[4, 0, 0, 0, 1, 5], [1, 4, 4, 0, 4, 0], [1, 0]]]
         gets_extra_turn = False
@@ -115,7 +115,7 @@ class TestGameState:
 
     def test_game_state_returns_number_of_moves_available_on_opponents_side_at_start(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 3
         board_log = [[[4, 0, 0, 4, 0, 4], [0, 4, 4, 0, 4, 0], [0, 0]],
                      [[4, 0, 0, 0, 1, 5], [1, 4, 4, 0, 4, 0], [1, 0]]]
         gets_extra_turn = False
@@ -126,7 +126,7 @@ class TestGameState:
 
     def test_game_state_returns_stones_sown_on_own_side(self):
         player_number = 0
-        pot_number = 4
+        pot_number = 3
         board_log = [[[4, 0, 0, 4, 0, 4], [0, 4, 4, 0, 4, 0], [0, 0]],
                      [[4, 0, 0, 0, 1, 5], [1, 4, 4, 0, 4, 0], [1, 0]]]
         gets_extra_turn = False
@@ -136,7 +136,7 @@ class TestGameState:
 
     def test_game_state_returns_stones_sown_on_own_side_when_there_are_fewer_stones_sown_than_pots(self):
         player_number = 0
-        pot_number = 2
+        pot_number = 1
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [0, 0]],
                      [[4, 0, 2, 4, 0, 4], [0, 4, 4, 0, 4, 0], [0, 0]]]
         gets_extra_turn = False
@@ -146,7 +146,7 @@ class TestGameState:
 
     def test_game_state_returns_stones_sown_on_own_side_when_a_turn_loops_around(self):
         player_number = 0
-        pot_number = 3
+        pot_number = 2
         board_log = [[[4, 4, 16, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]],
                      [[5, 5, 1, 6, 6, 6], [5, 5, 5, 5, 5, 5], [1, 0]]]
         gets_extra_turn = False
@@ -156,7 +156,7 @@ class TestGameState:
 
     def test_game_state_returns_stones_sown_on_opponents_side(self):
         player_number = 1
-        pot_number = 4
+        pot_number = 3
         board_log = [[[25, 15, 0, 3, 16, 9], [13, 27, 8, 23, 16, 0], [0, 0]],
                      [[27, 17, 2, 5, 18, 11], [15, 2, 11, 25, 18, 2], [0, 2]]]
         gets_extra_turn = False
@@ -166,7 +166,7 @@ class TestGameState:
 
     def test_game_state_returns_stones_sown_on_opponents_side_when_there_are_fewer_stones(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [0, 0]],
                      [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [1, 0]]]
         gets_extra_turn = False
@@ -176,7 +176,7 @@ class TestGameState:
 
     def test_game_state_returns_current_score(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
                      [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
         gets_extra_turn = False
@@ -186,7 +186,7 @@ class TestGameState:
 
     def test_game_state_returns_current_score_from_whole_board(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
                      [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
         gets_extra_turn = False
@@ -196,7 +196,7 @@ class TestGameState:
 
     def test_game_state_returns_current_winning_player(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
                      [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
         gets_extra_turn = False
@@ -206,7 +206,7 @@ class TestGameState:
 
     def test_game_state_returns_current_winning_player_when_there_is_a_draw(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 1], [0, 4, 4, 0, 4, 0], [23, 24]],
                      [[4, 1, 1, 4, 0, 0], [0, 4, 4, 0, 4, 0], [24, 24]]]
         gets_extra_turn = True
@@ -216,7 +216,7 @@ class TestGameState:
 
     def test_game_state_returns_current_winning_player_from_whole_board_analysis(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 40, 0], [23, 14]],
                      [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 40, 0], [24, 14]]]
         gets_extra_turn = False
@@ -226,7 +226,7 @@ class TestGameState:
 
     def test_game_state_returns_current_winning_player_from_whole_board_analysis_when_draw(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 40, 0], [23, 14]],
                      [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 9, 0], [24, 14]]]
         gets_extra_turn = False
@@ -236,7 +236,7 @@ class TestGameState:
 
     def test_game_state_returns_player_score(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
                      [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
         gets_extra_turn = False
@@ -246,7 +246,7 @@ class TestGameState:
 
     def test_game_state_returns_opponent_score(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
                      [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
         gets_extra_turn = False
@@ -256,7 +256,7 @@ class TestGameState:
 
     def test_game_state_returns_score_difference(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
                      [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
         gets_extra_turn = False
@@ -266,7 +266,7 @@ class TestGameState:
 
     def test_game_state_returns_score_difference_from_whole_board(self):
         player_number = 0
-        pot_number = 6
+        pot_number = 5
         board_log = [[[4, 1, 1, 4, 0, 4], [0, 4, 4, 0, 4, 0], [23, 14]],
                      [[4, 1, 1, 4, 0, 0], [1, 5, 5, 0, 4, 0], [24, 14]]]
         gets_extra_turn = False
@@ -276,7 +276,7 @@ class TestGameState:
 
     def test_game_state_returns_kroos_on_own_side_start(self):
         player_number = 0
-        pot_number = 3
+        pot_number = 2
         board_log = [[[25, 15, 13, 3, 16, 9], [12, 27, 8, 23, 16, 0], [0, 0]],
                      [[26, 16, 0, 4, 17, 10], [13, 28, 9, 0, 17, 1], [26, 0]]]
         gets_extra_turn = False
@@ -286,7 +286,7 @@ class TestGameState:
 
     def test_game_state_returns_kroos_on_own_side_end(self):
         player_number = 0
-        pot_number = 3
+        pot_number = 2
         board_log = [[[25, 15, 13, 3, 16, 9], [12, 27, 8, 23, 16, 0], [0, 0]],
                      [[26, 16, 0, 4, 17, 10], [13, 28, 9, 0, 17, 1], [26, 0]]]
         gets_extra_turn = False
@@ -296,7 +296,7 @@ class TestGameState:
 
     def test_game_state_returns_kroos_on_own_side_index_start(self):
         player_number = 0
-        pot_number = 3
+        pot_number = 2
         board_log = [[[25, 15, 13, 3, 16, 9], [12, 27, 8, 23, 16, 0], [0, 0]],
                      [[26, 16, 0, 4, 17, 10], [13, 28, 9, 0, 17, 1], [26, 0]]]
         gets_extra_turn = False
@@ -306,7 +306,7 @@ class TestGameState:
 
     def test_game_state_returns_kroos_on_own_side_index_end(self):
         player_number = 0
-        pot_number = 3
+        pot_number = 2
         board_log = [[[25, 15, 13, 3, 16, 9], [12, 27, 8, 23, 16, 0], [0, 0]],
                      [[26, 16, 0, 4, 17, 10], [13, 28, 9, 0, 17, 1], [26, 0]]]
         gets_extra_turn = False
@@ -316,7 +316,7 @@ class TestGameState:
 
     def test_game_state_returns_kroos_on_opponents_side_start(self):
         player_number = 0
-        pot_number = 3
+        pot_number = 2
         board_log = [[[25, 15, 13, 3, 16, 9], [12, 27, 8, 23, 16, 0], [0, 0]],
                      [[26, 16, 0, 4, 17, 10], [13, 28, 9, 0, 17, 1], [26, 0]]]
         gets_extra_turn = False
@@ -326,7 +326,7 @@ class TestGameState:
 
     def test_game_state_returns_kroos_on_opponents_side_end(self):
         player_number = 0
-        pot_number = 3
+        pot_number = 2
         board_log = [[[25, 15, 13, 3, 16, 9], [12, 27, 8, 23, 16, 0], [0, 0]],
                      [[26, 16, 0, 4, 17, 10], [13, 28, 9, 0, 17, 1], [26, 0]]]
         gets_extra_turn = False
@@ -336,7 +336,7 @@ class TestGameState:
 
     def test_game_state_returns_kroos_on_opponents_side_index_start(self):
         player_number = 0
-        pot_number = 3
+        pot_number = 2
         board_log = [[[25, 15, 13, 3, 16, 9], [12, 27, 8, 23, 16, 0], [0, 0]],
                      [[26, 16, 0, 4, 17, 10], [13, 28, 9, 0, 17, 1], [26, 0]]]
         gets_extra_turn = False
@@ -346,7 +346,7 @@ class TestGameState:
 
     def test_game_state_returns_kroos_on_opponents_side_index_end(self):
         player_number = 0
-        pot_number = 3
+        pot_number = 2
         board_log = [[[25, 15, 13, 3, 16, 9], [12, 27, 8, 23, 16, 0], [0, 0]],
                      [[26, 16, 0, 4, 17, 10], [13, 28, 9, 0, 17, 1], [26, 0]]]
         gets_extra_turn = False

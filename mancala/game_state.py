@@ -57,7 +57,7 @@ def get_non_empty_pots(player, turn):
     return [index + 1 for index, item in enumerate(turn[player]) if item > 0]
 
 def get_stones_sown_on_own_side(board_log, player, pot_number):
-    stones_in_played_pot = board_log[-2][player][pot_number -1]
+    stones_in_played_pot = board_log[-2][player][pot_number]
     stones_difference = sum(board_log[-2][player]) - sum(board_log[-1][player])
     return stones_in_played_pot - stones_difference
 
@@ -77,8 +77,8 @@ def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over):
     board_at_end = board_log[-1]
     score = board_at_end[2]
     return {
-        "current_player": player,
-        "pot_played": pot_number,
+        "current_player": player + 1,
+        "pot_played": pot_number + 1,
         "turn_number": len(board_log) -1,
         "stones_captured": get_stones_captured(player, board_log),
         "get_extra_turn": gets_extra_turn,
