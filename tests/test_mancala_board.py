@@ -1,4 +1,5 @@
 import pytest
+import unittest.mock as mock
 
 from mancala.mancala_board import MancalaBoard
 
@@ -143,6 +144,29 @@ class TestGameBoardLog:
         assert mancala.game_board_log[2] == [[4, 4, 4, 4, 4, 0], [5, 0, 6, 5, 5, 5], [1, 1]]
         assert mancala.game_board_log[3] == [[4, 0, 5, 5, 5, 0], [0, 0, 6, 5, 5, 5], [7, 1]]
 
+class TestGameStateLog:
+    @mock.patch('game_state.get_game_state')
+    def test_calls_game_state_with_correct_params_when_player_one_takes_a_turn(self, game_state_mock):
+        mancala = MancalaBoard(6, 4)
+        mancala.play(1, 3)
+        print(f"GAME STATE {mancala.game_board_log}")
+
+        expected_game_board_log = [[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]], [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]]]
+        game_state_mock.assert_called_with(0, 2, expected_game_board_log, True, False)
+
+    @mock.patch('game_state.get_game_state', return_value={ "game_state": "values"})
+    def test_appends_the_game_state_to_logs_when_player_one_takes_a_turn(self, game_state_mock):
+        mancala = MancalaBoard(6, 4)
+        mancala.play(1, 3)
+        assert mancala.game_state_log == [{ "game_state": "values"}]
+
+    @mock.patch('game_state.get_game_state', return_value={ "game_state": "values"})
+    def test_appends_the_game_state_three_times_for_three_turns(self, game_state_mock):
+        mancala = MancalaBoard(6, 4)
+        mancala.play(1, 3)
+        mancala.play(2, 1)
+        mancala.play(1, 5)
+        assert mancala.game_state_log == [{ "game_state": "values"}, { "game_state": "values"}, { "game_state": "values"}]
 
 class TestPlayerGetsAnExtraTurn:
     @pytest.fixture(scope='function')

@@ -131,22 +131,20 @@ class MancalaBoard():
 
         turn = self.generate_turn(player_number, pot_number)
         self.game_board_log.append(turn[0])
-
-        is_game_over =  self.check_for_game_over(turn[0])
+        self.check_for_game_over(turn[0])
         gets_extra_turn = self.check_for_extra_turn(turn[1])
 
-        # if len(self.game_board_log) > 1: # If not the initial board set up, add state
-        #     new_game_state = game_state.get_game_state(
-        #         player_number,
-        #         pot_number,
-        #         self.game_board_log,
-        #         gets_extra_turn,
-        #         is_game_over
-        #     )
-        #     print(f"GAME STATE: {new_game_state}")
-        #     self.game_state_log.append(new_game_state)
+        if len(self.game_board_log) > 1: # If not the initial board set up, add state
+            new_game_state = game_state.get_game_state(
+                player_number,
+                pot_number,
+                self.game_board_log,
+                gets_extra_turn,
+                self.game_is_over
+            )
+            self.game_state_log.append(new_game_state)
 
-        if is_game_over == True:
+        if self.game_is_over == True:
             return False
         else:
             return gets_extra_turn
