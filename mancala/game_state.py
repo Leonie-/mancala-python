@@ -22,7 +22,7 @@
 # Pots attacking at end (array)
 
 def get_opposite_player(current_player):
-    return 1 if current_player is 2 else 2
+    return 0 if current_player is 1 else 1
 
 def get_current_winner(score):
     if score[0] == score[1]:
@@ -43,28 +43,28 @@ def get_score_difference_whole_board(board):
     return get_score_difference([player_one_score, player_two_score])
 
 def get_stones_captured(player_number, board_log):
-    return board_log[-1][2][player_number - 1] - board_log[-2][2][player_number - 1]
+    return board_log[-1][2][player_number] - board_log[-2][2][player_number]
 
 def get_empty_pots(player, turn):
-    return [index + 1 for index, item in enumerate(turn[player - 1]) if item == 0]
+    return [index + 1 for index, item in enumerate(turn[player]) if item == 0]
 
 def get_non_empty_pots(player, turn):
-    return [index + 1 for index, item in enumerate(turn[player - 1]) if item > 0]
+    return [index + 1 for index, item in enumerate(turn[player]) if item > 0]
 
 def get_stones_sown_on_own_side(board_log, player, pot_number):
-    stones_in_played_pot = board_log[-2][player -1][pot_number -1]
-    stones_difference = sum(board_log[-2][player -1]) - sum(board_log[-1][player -1])
+    stones_in_played_pot = board_log[-2][player][pot_number -1]
+    stones_difference = sum(board_log[-2][player]) - sum(board_log[-1][player])
     return stones_in_played_pot - stones_difference
 
 def get_stones_sown_on_opponents_side(board_log, opponent):
-    stones_difference =  sum(board_log[-1][opponent -1]) - sum(board_log[-2][opponent -1])
+    stones_difference =  sum(board_log[-1][opponent]) - sum(board_log[-2][opponent])
     return stones_difference
 
 def get_kroos(player, turn):
-    return [item for index, item in enumerate(turn[player - 1]) if item >= 13]
+    return [item for index, item in enumerate(turn[player]) if item >= 13]
 
 def get_kroos_index(player, turn):
-    return [index + 1 for index, item in enumerate(turn[player - 1]) if item >= 13]
+    return [index + 1 for index, item in enumerate(turn[player]) if item >= 13]
 
 def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over):
     opponent = get_opposite_player(player)
@@ -91,8 +91,8 @@ def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over):
         "current_score": score,
         "current_winning_player": get_current_winner(score),
         "current_winning_player_whole_board": get_current_winner_from_board(board_at_end),
-        "player_score": score[player -1],
-        "opponent_score": score[opponent - 1],
+        "player_score": score[player],
+        "opponent_score": score[opponent],
         "score_difference": get_score_difference(score),
         "score_difference_whole_board": get_score_difference_whole_board(board_at_end),
         "kroos_on_own_side_start": get_kroos(player, board_at_start),
