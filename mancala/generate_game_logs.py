@@ -12,9 +12,8 @@ def init():
     first_player = 1
     player_types = ["minimax", "alphabeta", "random", "rightpot", "potwithleast", "potwithmost", "takeanotherturn", "avoidanotherturn"]
 
-    for lp in range(1):
-        print(f"ITERATION {lp}")
-        mancala_board = MancalaBoard(pots, stones)
+    for game_number in range(5):
+        mancala_board = MancalaBoard(pots, stones, None, game_number)
         player_one_type = random.choice(player_types)
         player_two_type = random.choice(player_types)
         max_lookahead = 6
@@ -33,6 +32,5 @@ def init():
 
             game_state_writer = csv.writer(game_state_csv)
             game_state_writer.writerow(game_logs[1])
-
 
 init()
