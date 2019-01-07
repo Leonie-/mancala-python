@@ -74,7 +74,7 @@ def get_kroos(player, turn):
 def get_kroos_index(player, turn):
     return [index + 1 for index, item in enumerate(turn[player]) if item >= 13]
 
-def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over, game_number):
+def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over, game_number = 0):
     opponent = get_opposite_player(player)
     board_at_start = board_log[-2]
     board_at_end = board_log[-1]

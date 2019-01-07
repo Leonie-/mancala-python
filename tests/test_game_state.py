@@ -3,6 +3,18 @@ import unittest.mock as mock
 import game_state
 
 class TestGameState:
+    def test_game_state_returns_default_game_number(self):
+        player_number = 0
+        pot_number = 2
+        board_log = [[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]],
+                     [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]],
+                     [[4, 4, 0, 0, 6, 6], [5, 5, 4, 4, 4, 4], [2, 0]]]
+        gets_extra_turn = False
+        is_game_over = False
+
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["game_number"] == 0
+
     def test_game_state_returns_game_number(self):
         player_number = 0
         pot_number = 2
