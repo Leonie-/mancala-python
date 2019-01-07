@@ -3,7 +3,7 @@ import copy
 import game_state
 
 class MancalaBoard():
-    def __init__(self, pots, stones, initial_state = None):
+    def __init__(self, pots, stones, initial_state = None, game_number = 0):
         default_state = [
             [stones] * pots,
             [stones] * pots,
@@ -15,6 +15,7 @@ class MancalaBoard():
         self.game_is_over = False
         self.game_board_log = [ default_state ] if initial_state is None else [ initial_state ]
         self.game_state_log = []
+        self.game_number = game_number
         # print(self.game_board_log)
 
     def check_player_turn_number(self, player_number):
@@ -140,7 +141,8 @@ class MancalaBoard():
                 pot_number,
                 self.game_board_log,
                 gets_extra_turn,
-                self.game_is_over
+                self.game_is_over,
+                self.game_number
             )
             self.game_state_log.append(new_game_state)
 

@@ -3,6 +3,22 @@ import unittest.mock as mock
 
 from mancala.mancala_board import MancalaBoard
 
+class TestGameNumberDefaultProperty:
+    @pytest.fixture(scope='function')
+    def mancala(self):
+        return MancalaBoard(6, 4)
+
+    def test_returns_default_game_number_if_none_provided(self, mancala):
+        assert mancala.game_number == 0
+
+class TestGameNumberProperty:
+    @pytest.fixture(scope='function')
+    def mancala(self):
+        return MancalaBoard(6, 4, None, 555)
+
+    def test_returns_game_number_when_provided(self, mancala):
+        assert mancala.game_number == 555
+
 class TestInitialGameBoardLogDefault:
     @pytest.fixture(scope='function')
     def mancala(self):
@@ -147,12 +163,11 @@ class TestGameBoardLog:
 class TestGameStateLog:
     @mock.patch('game_state.get_game_state')
     def test_calls_game_state_with_correct_params_when_player_one_takes_a_turn(self, game_state_mock):
-        mancala = MancalaBoard(6, 4)
+        mancala = MancalaBoard(6, 4, None, 55)
         mancala.play(1, 3)
-        print(f"GAME STATE {mancala.game_board_log}")
 
         expected_game_board_log = [[[4, 4, 4, 4, 4, 4], [4, 4, 4, 4, 4, 4], [0, 0]], [[4, 4, 0, 5, 5, 5], [4, 4, 4, 4, 4, 4], [1, 0]]]
-        game_state_mock.assert_called_with(0, 2, expected_game_board_log, True, False)
+        game_state_mock.assert_called_with(0, 2, expected_game_board_log, True, False, 55)
 
     @mock.patch('game_state.get_game_state', return_value={ "game_state": "values"})
     def test_appends_the_game_state_to_logs_when_player_one_takes_a_turn(self, game_state_mock):
