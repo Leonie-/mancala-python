@@ -218,7 +218,7 @@ class TestGameState:
         result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
         assert result["stones_sown_on_own_side"] == 9
 
-    def test_game_state_returns_stones_sown_on_opponents_side(self):
+    def test_game_state_returns_stones_sown_on_opponents_side_player_one(self):
         player_number = 1
         pot_number = 3
         board_log = [[[25, 15, 0, 3, 16, 9], [13, 27, 8, 23, 16, 0], [0, 0]],
@@ -227,6 +227,15 @@ class TestGameState:
         is_game_over = False
         result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
         assert result["stones_sown_on_opponents_side"] == 12
+
+    def test_game_state_returns_stones_sown_on_opponents_side_player_two(self):
+        player_number = 1
+        pot_number = 4
+        board_log = [[[0, 2, 1, 0, 2, 9], [0, 0, 0, 3, 8, 8], [4, 11]], [[0, 2, 1, 0, 2, 9], [0, 0, 0, 0, 9, 9], [4, 12]]]
+        gets_extra_turn = True
+        is_game_over = False
+        result = game_state.get_game_state(player_number, pot_number, board_log, gets_extra_turn, is_game_over)
+        assert result["stones_sown_on_opponents_side"] == 0
 
     def test_game_state_returns_stones_sown_on_opponents_side_when_there_are_fewer_stones(self):
         player_number = 0
