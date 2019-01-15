@@ -16,6 +16,7 @@ class MancalaBoard():
         self.game_board_log = [ default_state ] if initial_state is None else [ initial_state ]
         self.game_state_log = []
         self.game_number = game_number
+        self.player_turns = [[], []]
         # print(self.game_board_log)
 
     def check_player_turn_number(self, player_number):
@@ -113,6 +114,8 @@ class MancalaBoard():
 
         new_turn[player_number][starting_pot] = 0
         starting_pot += 1
+
+        self.player_turns[player_number].append(starting_pot)
 
         return self.sow(copy.deepcopy(player_number), player_number, stones_to_sow, starting_pot, new_turn)
 

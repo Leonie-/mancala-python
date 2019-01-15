@@ -11,6 +11,14 @@ class TestGameNumberDefaultProperty:
     def test_returns_default_game_number_if_none_provided(self, mancala):
         assert mancala.game_number == 0
 
+class TestPlayerTurnsDefaultProperty:
+    @pytest.fixture(scope='function')
+    def mancala(self):
+        return MancalaBoard(6, 4)
+
+    def test_returns_default_player_turns(self, mancala):
+        assert mancala.player_turns == [[], []]
+
 class TestGameNumberProperty:
     @pytest.fixture(scope='function')
     def mancala(self):
@@ -121,6 +129,12 @@ class TestGamePlay:
     def test_winning_player_is_none_when_no_one_has_won(self, mancala):
         mancala.play(1, 1)
         assert mancala.winning_player == None
+
+    def test_adds_moves_to_the_player_turns_log(self, mancala):
+        mancala.play(1, 1)
+        mancala.play(2, 6)
+        mancala.play(1, 4)
+        assert mancala.player_turns == [[1,4], [6]]
 
 class TestGameBoardLog:
     @pytest.fixture(scope='function')
