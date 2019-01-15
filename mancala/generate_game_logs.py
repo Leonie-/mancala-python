@@ -12,7 +12,7 @@ def init():
     first_player = 1
     player_types = ["minimax", "alphabeta", "random", "rightpot", "potwithleast", "potwithmost", "takeanotherturn", "avoidanotherturn"]
 
-    for game_number in range(10):
+    for game_number in range(1000):
         mancala_board = MancalaBoard(pots, stones, None, game_number)
         player_one_type = random.choice(player_types)
         player_two_type = random.choice(player_types)
@@ -30,7 +30,10 @@ def init():
             "winner": mancala_board.winning_player,
             "final_score_player_1": mancala_board.game_board_log[-1][2][0],
             "final_score_player_2": mancala_board.game_board_log[-1][2][1],
-            "final_score_difference": abs(mancala_board.game_board_log[-1][2][0] - mancala_board.game_board_log[-1][2][1])
+            "final_score_difference": abs(mancala_board.game_board_log[-1][2][0] - mancala_board.game_board_log[-1][2][1]),
+            "game_length_by_turns": len(mancala_board.game_board_log) - 2,
+            "player_one_turns": mancala_board.player_turns[0],
+            "player_two_turns": mancala_board.player_turns[1],
         }
 
         with open('kalah_game_board_data.csv', 'a', newline='') as game_board_csv, open('kalah_game_state_data.csv', 'a', newline='') as game_state_csv:
