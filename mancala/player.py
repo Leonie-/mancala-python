@@ -1,5 +1,6 @@
 import random
 
+from mcts import MCTS
 from mancala_board import MancalaBoard
 
 class Player():
@@ -185,7 +186,13 @@ class Player():
         if self.player_type == "avoidanotherturn":
             pot = self.pick_pot_with_extra_turn(False)
 
-        print(f"Pot chosen for play: {pot}")
+        if self.player_type == "mcts":
+            time_limit_seconds = 5
+            number_of_simulations = 10
+            mcts = MCTS(self.mancala, time_limit_seconds, number_of_simulations)
+            pot = mcts.pick_pot(self.player_number)
+
+        # print(f"Pot chosen for play: {pot}")
 
         return self.mancala.play(self.player_number, pot)
 

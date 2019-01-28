@@ -1,7 +1,6 @@
 import math
-import numpy
-import collections
 import random
+import time
 
 from mancala_board import MancalaBoard
 import player
@@ -22,9 +21,6 @@ class Node():
         self.is_fully_expanded = False
         self.is_leaf = game_state.check_for_game_over(self.current_board_state)
 
-        print(f"self.legal_moves {game_state.get_legal_moves(2)}")
-        print(f"player number {self.player_number}")
-
     def check_child_moves_to_explore(self):
         return set(self.legal_moves)^set(self.explored_child_moves)
 
@@ -35,25 +31,34 @@ class Node():
         self.child_nodes.add(child)
 
 class MCTS():
-    def __init__(self, mancala, number_of_simulations=5, exploration_constant=1):
+    def __init__(self, mancala, time_limit_seconds, number_of_simulations=5, exploration_constant=1):
         self.mancala = mancala
+        self.time_limit = time_limit_seconds
         self.number_of_simulations = number_of_simulations
         self.exploration_constant = exploration_constant
 
     def pick_pot(self, player_number):
         # Create root node (top of tree)
         root_node = Node(self.mancala)
-        return self.selection(root_node)
+        time_limit = time.time() + self.time_limit / 1000
+        while time.time() < time_limit:
+            self.selection(root_node)
+
+        promising_child = self.get_most_promising_child_with_uct(root_node, self.exploration_constant)
+        return promising_child.move
+
 
     def selection(self, node):
-        if node.is_leaf:
-            raise Exception("Leaf reached")
-        else:
-            node = self.expand_tree(node)
-            print(f"children {node.child_nodes}")
-            # return best child
-            best_child = self.get_best_child_with_uct(node, self.exploration_constant)
-            return best_child.move
+        if not node.is_leaf:
+            if node.is_fully_expanded:
+                # Drill down into the tree using UCT to select the most promising child node
+                promising_child = self.get_most_promising_child_with_uct(node, self.exploration_constant)
+                return self.selection(promising_child)
+            else:
+                # Expand, simulate and backpropagate
+                node = self.expand_tree(node)
+                return self.selection(node)
+        return
 
     def expand_tree(self, parent_node):
         # If there are child nodes that have't been explored yet, explore them (selection)
@@ -61,16 +66,13 @@ class MCTS():
         for child_move in moves_to_explore:
             # Add a new node to the tree (expansion)
             node = self.play_move_and_add_node(parent_node, child_move)
-            # Add flag if node is fully expanded
-            # if len(parent_node.legal_moves) == len(parent_node.moves_to_explore):
-            #     parent_node.is_fully_expanded = True
-
             # Run simulations of random moves from this node until a leaf is reached (simulation)
             for index in range(self.number_of_simulations):
                 reward = self.run_simulation(node.current_board_state, node.player_number)
                 # Backpropagate and update the nodes with relevant stats (update)
                 self.backpropogate(node, reward)
 
+        parent_node.is_fully_expanded = True
         return parent_node
 
     def play_move_and_add_node(self, parent_node, move):
@@ -85,7 +87,7 @@ class MCTS():
     def get_opposite_player(self, parent_node):
         if parent_node.gets_another_turn is True:
             return parent_node.player_number
-        return 1 if parent_node.player_number is 2 else 1
+        return 1 if parent_node.player_number is 2 else 2
 
     def run_simulation(self, board_state, player_number, max_depth=5):
         mancala_board = MancalaBoard(6, 6, board_state)
@@ -113,12 +115,11 @@ class MCTS():
             node.total_reward += reward
             node = node.parent_node
 
-    def get_best_child_with_uct(self, node, exploration_value):
+    def get_most_promising_child_with_uct(self, node, exploration_value):
         best_value =  float("-inf")
         best_nodes = []
-        print(f"node.child_nodes {node.child_nodes}")
         for child_node in node.child_nodes:
-            # Upper confidence bounds for trees (UCT)
+            # Upper confidence bounds for trees algorithm (UCT)
             value = child_node.total_reward / child_node.number_of_visits + \
                     exploration_value * math.sqrt(2 * math.log(node.number_of_visits) / child_node.number_of_visits)
             if value >= best_value:
