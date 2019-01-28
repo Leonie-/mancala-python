@@ -36,8 +36,10 @@ class MCTS():
         self.time_limit = time_limit_seconds
         self.number_of_simulations = number_of_simulations
         self.exploration_constant = exploration_constant
+        self.player = None
 
     def pick_pot(self, player_number):
+        self.player = player_number
         # Create root node (top of tree)
         root_node = Node(self.mancala)
         time_limit = time.time() + self.time_limit / 1000
@@ -46,7 +48,6 @@ class MCTS():
 
         promising_child = self.get_most_promising_child_with_uct(root_node, self.exploration_constant)
         return promising_child.move
-
 
     def selection(self, node):
         if not node.is_leaf:
@@ -98,16 +99,17 @@ class MCTS():
         )
         # Run simulation and determine winner
         game_logs = simulated_game.play(player_number)
-        # print(f"{game_logs}")
         winner = game_logs[-1][-1]['current_winning_player']
         # Return reward
-        reward = 0
-        if winner is player_number:
-            reward = 1
-        if winner is "draw":
-            reward = 0.5
+        return self.get_reward(winner)
 
-        return reward
+    def get_reward(self, winner):
+        if winner is self.player_number:
+            return 1
+        if winner is "draw":
+            return 0.5
+        else:
+            return 0
 
     def backpropogate(self, node, reward):
         while node is not None:
