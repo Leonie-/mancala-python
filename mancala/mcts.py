@@ -13,6 +13,7 @@ class Node():
         self.current_board_state = game_state.game_board_log[-1]
         self.move = move
         self.parent_node = parent
+        self.get_legal_moves = game_state.get_legal_moves
         self.child_nodes = set()
         self.explored_child_moves = set()
         self.number_of_visits = 0
@@ -21,9 +22,7 @@ class Node():
         self.is_leaf = game_state.game_is_over
 
     def check_child_moves_to_explore(self):
-        legal_moves = self.game_state.get_legal_moves(self.player)
-        # print(f" legal moves: {legal_moves}")
-        # print(f" vs explored moves: {self.explored_child_moves}")
+        legal_moves = self.get_legal_moves(self.player)
         return set(legal_moves)^set(self.explored_child_moves)
 
     def add_explored_child_move(self, move):
