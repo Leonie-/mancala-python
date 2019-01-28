@@ -1,57 +1,74 @@
 import unittest.mock as mock
 
-from mancala.mcts import UCTNode, EmptyNode, MCTS
+from mancala.mancala_board import MancalaBoard
+from mancala.mcts import Node, MCTS
 
-class TestEmptyNode:
-    def test_adds_an_empty_node(self):
-        empty_node = EmptyNode()
-        assert empty_node.parent == None
-        assert empty_node.visited_states == set()
+class TestNodeHasCorrectValues:
+    def test_create_node_with_default_values(self):
+        mock_game = mock.Mock()
+        mock_game.game_board_log = [[[2,0,3,0,0,0], [1,1,1,1,1,0], [15,15]]]
+        mock_game.game_is_over = False
+        expected_player = 2
+        expected_move = 5
 
-class TestUCTNodeAddExploredChildMove:
+        node = Node(mock_game, expected_player, expected_move)
+        assert node.game_state == mock_game
+        assert node.player == expected_player
+        assert node.current_board_state == mock_game.game_board_log[0]
+        assert node.move == expected_move
+        assert node.parent_node == None
+        assert node.child_nodes == set()
+        assert node.explored_child_moves == set()
+        assert node.number_of_visits == 0
+        assert node.total_reward == 0
+        assert node.is_fully_expanded == False
+        assert node.is_leaf == False
+
+class TestNodeAddExploredChildMove:
     def test_adds_an_explored_child_move(self):
-        current_board_state = []
-        legal_moves = [2, 3, 6]
-        test_child_move = 3
+        mock_game = mock.Mock()
+        mock_game.game_board_log = [[[2, 0, 3, 0, 0, 0], [1, 1, 1, 1, 1, 0], [15, 15]]]
+        mock_game.game_is_over = False
+        player = 1
+        move = 3
+        explored_child_move = 1
 
-        uct_node = UCTNode(current_board_state, legal_moves)
-        uct_node.add_explored_child_move(test_child_move)
-        assert uct_node.explored_child_moves == { 3 }
+        node = Node(mock_game, player, move)
+        node.add_explored_child_move(explored_child_move)
+        assert node.explored_child_moves == { explored_child_move }
 
-class TestUCTNodeAddChildNode:
-    def test_adds_an_explored_child_move(self):
-        current_board_state = []
-        legal_moves = [2, 3, 6]
-        test_child_node = "child node object"
+class TestNodeAddChildNode:
+    def test_adds_a_child_node(self):
+        mock_game = mock.Mock()
+        mock_game.game_board_log = [[[2, 0, 3, 0, 0, 0], [1, 1, 1, 1, 1, 0], [15, 15]]]
+        mock_game.game_is_over = False
+        player = 1
+        move = 3
+        child_node = "child node"
 
-        uct_node = UCTNode(current_board_state, legal_moves)
-        uct_node.add_child_node(test_child_node)
-        assert uct_node.child_nodes == { test_child_node }
+        node = Node(mock_game, player, move)
+        node.add_child_node(child_node)
+        assert node.child_nodes == {child_node}
 
-class TestUCTNodeCheckChildMoves:
+class TestNodeCheckChildMoves:
     def test_returns_child_moves_to_explore(self):
-        current_board_state = []
-        legal_moves = [2, 3, 6]
+        mock_game = mock.Mock()
+        mock_game.game_board_log = [[[2, 0, 3, 0, 0, 0], [1, 1, 1, 1, 1, 0], [15, 15]]]
+        mock_game.game_is_over = False
+        mock_game.get_legal_moves.return_value = [1, 3]
+        player = 1
+        move = 3
 
-        uct_node = UCTNode(current_board_state, legal_moves)
-        assert uct_node.check_child_moves_to_explore() == {2, 3, 6}
-        assert uct_node.unexplored_child_moves == {2, 3, 6}
+        node = Node(mock_game, player, move)
+        assert node.check_child_moves_to_explore() == {1, 3}
 
     def test_returns_an_empty_set_when_there_are_no_child_moves_to_explore(self):
-        current_board_state = []
-        legal_moves = [2]
+        mock_game = mock.Mock()
+        mock_game.game_board_log = [[[0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 0], [15, 15]]]
+        mock_game.game_is_over = False
+        mock_game.get_legal_moves.return_value = []
+        player = 1
+        move = 3
 
-        uct_node = UCTNode(current_board_state, legal_moves)
-        uct_node.add_explored_child_move(2)
-        assert uct_node.check_child_moves_to_explore() == set()
-        assert uct_node.unexplored_child_moves == set()
-
-# class TestMCTS:
-#     def test_selects_a_pot(self):
-#         mancala_mock = mock.Mock()
-#         mancala_mock.game_board_log = [[[4, 5, 4, 3, 2, 1], [4, 0, 3, 0, 16, 0], [3, 16]]]
-#         mancala_mock.get_legal_moves.return_value = [1, 2, 3, 4, 5, 6]
-#         player_number = 1
-#
-#         mcts = MCTS(mancala_mock, player_number)
-#         assert mcts.selection(10) == 1
+        node = Node(mock_game, player, move)
+        assert node.check_child_moves_to_explore() == set()
