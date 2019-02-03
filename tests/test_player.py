@@ -1,5 +1,6 @@
 import unittest.mock as mock
 
+from mancala.mcts import MCTS
 from mancala.player import Player
 
 def test_creates_a_new_player():
@@ -45,21 +46,30 @@ class TestRightPotPlayer:
         player.play()
         mancala_mock.play.assert_called_with(1, 6)
 
+class TestLeftPotPlayer:
+
+    def test_picks_the_leftmost_pot_from_legal_moves_available(self):
+        mancala_mock = mock.Mock()
+        mancala_mock.get_legal_moves.return_value = [1, 4, 6]
+        player = Player(1, "leftpot", mancala_mock)
+        player.play()
+        mancala_mock.play.assert_called_with(1, 1)
+
 class TestPotWithLeastStonesPlayer:
 
-    def test_picks_the_first_pot_with_least_stones_from_legal_moves_available(self):
+    def test_picks_the_first_pot_with_fewest_stones_from_legal_moves_available(self):
         mancala_mock = mock.Mock()
         mancala_mock.game_board_log = [[[0, 13, 21, 0, 5, 5], [0, 0, 0, 0, 0, 0], [14, 6]]]
         mancala_mock.get_legal_moves.return_value = [2, 3, 5, 6]
-        player = Player(1, "potwithleast", mancala_mock)
+        player = Player(1, "potwithfewest", mancala_mock)
         player.play()
         mancala_mock.play.assert_called_with(1, 5)
 
-    def test_picks_the_first_pot_with_least_stones_from_legal_moves_available_when_game_has_not_ended(self):
+    def test_picks_the_first_pot_with_fewest_stones_from_legal_moves_available_when_game_has_not_ended(self):
         mancala_mock = mock.Mock()
         mancala_mock.game_board_log =[[[5, 4, 4, 0, 5, 5], [5, 4, 4, 0, 5, 5], [1, 1]]]
         mancala_mock.get_legal_moves.return_value = [1, 2, 3, 5, 6]
-        player = Player(1, "potwithleast", mancala_mock)
+        player = Player(1, "potwithfewest", mancala_mock)
         player.play()
         mancala_mock.play.assert_called_with(1, 2)
 
@@ -128,7 +138,7 @@ class TestMiniMaxScoreAtLeaf:
         game_over = True
 
         player = Player(1, "minimax", mancala_mock)
-        assert player.minimaxScore(mancala_mock, 0, game_over) == 100
+        assert player.minimax_score(mancala_mock, 0, game_over) == 100
 
     def test_minimax_scoring_with_depth_when_leaf_is_reached_and_current_player_wins(self):
         mancala_mock = mock.Mock()
@@ -138,7 +148,7 @@ class TestMiniMaxScoreAtLeaf:
         game_over = True
 
         player = Player(1, "minimax", mancala_mock)
-        assert player.minimaxScore(mancala_mock, depth, game_over) == 100 - depth
+        assert player.minimax_score(mancala_mock, depth, game_over) == 100 - depth
 
     def test_minimax_scoring_when_leaf_is_reached_and_opposite_player_wins(self):
         mancala_mock = mock.Mock()
@@ -147,7 +157,7 @@ class TestMiniMaxScoreAtLeaf:
         game_over = True
 
         player = Player(1, "minimax", mancala_mock)
-        assert player.minimaxScore(mancala_mock, 0, game_over) == 0
+        assert player.minimax_score(mancala_mock, 0, game_over) == 0
 
     def test_minimax_scoring_with_depth_when_leaf_is_reached_and_opposite_player_wins(self):
         mancala_mock = mock.Mock()
@@ -157,7 +167,7 @@ class TestMiniMaxScoreAtLeaf:
         game_over = True
 
         player = Player(1, "minimax", mancala_mock)
-        assert player.minimaxScore(mancala_mock, depth, game_over) == 0 - depth
+        assert player.minimax_score(mancala_mock, depth, game_over) == 0 - depth
 
     def test_minimax_scoring_when_leaf_is_reached_and_game_is_a_draw(self):
         mancala_mock = mock.Mock()
@@ -166,7 +176,7 @@ class TestMiniMaxScoreAtLeaf:
         game_over = True
 
         player = Player(1, "minimax", mancala_mock)
-        assert player.minimaxScore(mancala_mock, 0, game_over) == 50
+        assert player.minimax_score(mancala_mock, 0, game_over) == 50
 
 class TestMiniMaxScoreMidGame:
 
@@ -176,7 +186,7 @@ class TestMiniMaxScoreMidGame:
         game_over = False
 
         player = Player(1, "minimax", mancala_mock)
-        assert player.minimaxScore(mancala_mock, 0, game_over) == 100
+        assert player.minimax_score(mancala_mock, 0, game_over) == 100
 
     def test_minimax_scoring_with_depth_when_leaf_is_not_reached_but_current_player_is_winning(self):
         mancala_mock = mock.Mock()
@@ -185,7 +195,7 @@ class TestMiniMaxScoreMidGame:
         game_over = False
 
         player = Player(1, "minimax", mancala_mock)
-        assert player.minimaxScore(mancala_mock, depth, game_over) == 100 - depth
+        assert player.minimax_score(mancala_mock, depth, game_over) == 100 - depth
 
     def test_minimax_scoring_when_leaf_is_not_reached_but_opposite_player_is_winning(self):
         mancala_mock = mock.Mock()
@@ -193,7 +203,7 @@ class TestMiniMaxScoreMidGame:
         game_over = False
 
         player = Player(1, "minimax", mancala_mock)
-        assert player.minimaxScore(mancala_mock, 0, game_over) == 0
+        assert player.minimax_score(mancala_mock, 0, game_over) == 0
 
     def test_minimax_scoring_with_depth_when_leaf_is_not_reached_but_opposite_player_is_winning(self):
         mancala_mock = mock.Mock()
@@ -202,7 +212,7 @@ class TestMiniMaxScoreMidGame:
         game_over = False
 
         player = Player(1, "minimax", mancala_mock)
-        assert player.minimaxScore(mancala_mock, depth, game_over) == 0 - depth
+        assert player.minimax_score(mancala_mock, depth, game_over) == 0 - depth
 
 
     def test_minimax_scoring_when_leaf_is_not_reached_but_game_is_a_draw(self):
@@ -211,4 +221,18 @@ class TestMiniMaxScoreMidGame:
         game_over = False
 
         player = Player(1, "minimax", mancala_mock)
-        assert player.minimaxScore(mancala_mock, 0, game_over) == 50
+        assert player.minimax_score(mancala_mock, 0, game_over) == 50
+
+
+class TestMonteCarloTreeSearch:
+    # @mock.patch('mancala.mcts.play', returnValue=4)
+    def test_monte_carlo_tree_search(self):
+        # mcts_mock.play.return_value = 4
+
+        with mock.patch('mancala.mcts.MCTS.play') as mocked_mcts_play:
+            mancala_mock = mock.Mock()
+            mancala_mock.game_board_log = [[[4, 5, 4, 3, 2, 1], [4, 0, 3, 0, 16, 0], [3, 16]]]
+            mancala_mock.get_legal_moves.return_value = [1, 2, 3, 4, 5, 6]
+
+            player = Player(1, "mcts", mancala_mock)
+            assert player.play() == 4

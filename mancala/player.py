@@ -1,6 +1,6 @@
 import random
 
-from mcts import MCTS
+import mcts
 from mancala_board import MancalaBoard
 
 class Player():
@@ -28,7 +28,7 @@ class Player():
         else:
             return 0
 
-    def minimaxScore(self, game_instance, depth, game_over):
+    def minimax_score(self, game_instance, depth, game_over):
         last_move = game_instance.game_board_log[-1]
         winner = game_instance.winning_player if game_over else self.calculate_winner(last_move)
 
@@ -45,7 +45,7 @@ class Player():
     def minimax(self, game, phasing_player, depth = 0, move = None):
         game_over = game.game_over()
         if game_over or depth is self.maximum_depth:
-            return [self.minimaxScore(game, depth, game_over), move]
+            return [self.minimax_score(game, depth, game_over), move]
 
         depth += 1
 
@@ -141,15 +141,18 @@ class Player():
     def pick_right_pot(self):
          return self.mancala.get_legal_moves(self.player_number)[-1]
 
+    def pick_left_pot(self):
+         return self.mancala.get_legal_moves(self.player_number)[0]
+
     def pick_pot_with_most_stones(self):
         last_move_for_player = self.mancala.game_board_log[-1][self.player_number - 1]
         pot_with_most_stones = max(pot for index, pot in enumerate(last_move_for_player) if pot > 0)
         return last_move_for_player.index(pot_with_most_stones) + 1
 
-    def pick_pot_with_least_stones(self):
+    def pick_pot_with_fewest_stones(self):
         last_move_for_player = self.mancala.game_board_log[-1][self.player_number - 1]
-        pot_with_least_stones = min(pot for index, pot in enumerate(last_move_for_player) if pot > 0)
-        return last_move_for_player.index(pot_with_least_stones) + 1
+        pot_with_fewest_stones = min(pot for index, pot in enumerate(last_move_for_player) if pot > 0)
+        return last_move_for_player.index(pot_with_fewest_stones) + 1
 
     def pick_pot_with_extra_turn(self, extra_turn_setting):
         last_move = self.mancala.game_board_log[-1]
@@ -174,8 +177,11 @@ class Player():
         if self.player_type == "rightpot":
             pot = self.pick_right_pot()
 
-        if self.player_type == "potwithleast":
-            pot = self.pick_pot_with_least_stones()
+        if self.player_type == "leftpot":
+            pot = self.pick_left_pot()
+
+        if self.player_type == "potwithfewest":
+            pot = self.pick_pot_with_fewest_stones()
 
         if self.player_type == "potwithmost":
             pot = self.pick_pot_with_most_stones()
@@ -189,8 +195,8 @@ class Player():
         if self.player_type == "mcts":
             time_limit_seconds = 5
             number_of_simulations = 10
-            mcts = MCTS(self.mancala, time_limit_seconds, number_of_simulations)
-            pot = mcts.pick_pot(self.player_number)
+            monte_carlo = mcts.MCTS(self.mancala, self.player_number, time_limit_seconds, number_of_simulations)
+            pot = monte_carlo.pick_pot()
 
         # print(f"Pot chosen for play: {pot}")
 
