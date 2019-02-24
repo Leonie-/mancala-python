@@ -40,12 +40,8 @@ class MCTS():
         self.player = player_number
 
     def pick_pot(self):
-        # if self.mancala.current_player is 0:
-        #     self.mancala.check_player_turn_number(self.player)  # Ensure correct player number is set
         # Create root node (top of tree) with correct starting player set
-        # next_player = self.get_next_player(self.player)
         root_node = Node(self.mancala, self.player)
-        # root_node.game_state.switch_to_player(self.player)
 
         # Set a time limit
         time_limit = time.time() + self.time_limit / 1000
@@ -56,6 +52,7 @@ class MCTS():
         return promising_child.move
 
     def selection(self, node):
+        # Recursive function to expand tree down to leaf node
         if not node.is_leaf:
             if node.is_fully_expanded:
                 # Drill down into the tree using UCT to select the most promising child node
@@ -93,6 +90,7 @@ class MCTS():
     def play_move_and_create_node(self, parent_node, move):
         mancala_board = MancalaBoard(6, 6, parent_node.current_board_state)
         extra_turn = mancala_board.play(parent_node.player, move)
+        # Switch players
         next_player = self.get_next_player(parent_node.player, extra_turn)
         # Add new node to the tree
         return Node(mancala_board, next_player, move, parent_node)
