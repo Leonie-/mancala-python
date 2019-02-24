@@ -72,3 +72,12 @@ class TestNodeCheckChildMoves:
 
         node = Node(mock_game, player, move)
         assert node.check_child_moves_to_explore() == set()
+
+class TestMCTS:
+    def test_runs_a_simulated_game(self):
+        mancala = MancalaBoard(6,6, [[4, 5, 4, 3, 2, 1], [4, 0, 3, 0, 16, 0], [3, 16]])
+        player_number = 1
+        time_limit_seconds = 5
+
+        mcts = MCTS(mancala, player_number, time_limit_seconds)
+        assert mcts.pick_pot() == 1
