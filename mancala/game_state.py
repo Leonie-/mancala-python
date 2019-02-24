@@ -69,10 +69,10 @@ def get_stones_sown_on_opponents_side(board_log, opponent):
     return stones_difference
 
 def get_kroos(player, turn):
-    return [item for index, item in enumerate(turn[player]) if item >= 13]
+    return [item for index, item in enumerate(turn[player]) if item >= 6]
 
 def get_kroos_index(player, turn):
-    return [index + 1 for index, item in enumerate(turn[player]) if item >= 13]
+    return [index + 1 for index, item in enumerate(turn[player]) if item >= 6]
 
 def get_game_state(player, pot_number, board_log, gets_extra_turn, game_over, game_number = 0):
     opponent = get_opposite_player(player)
