@@ -139,19 +139,3 @@ class MCTSSimulationMiniMax():
                 best_value = value
                 best_nodes.append(child_node)
         return random.choice(best_nodes)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
