@@ -1,7 +1,7 @@
 import unittest.mock as mock
 
 from mancala.mancala_board import MancalaBoard
-from mancala.mcts import Node, MCTS
+from mancala.mcts import MCTSNode, MCTS
 
 class TestNodeHasCorrectValues:
     def test_create_node_with_default_values(self):
@@ -11,7 +11,7 @@ class TestNodeHasCorrectValues:
         expected_player = 2
         expected_move = 5
 
-        node = Node(mock_game, expected_player, expected_move)
+        node = MCTSNode(mock_game, expected_player, expected_move)
         assert node.game_state == mock_game
         assert node.player == expected_player
         assert node.current_board_state == mock_game.game_board_log[0]
@@ -33,7 +33,7 @@ class TestNodeAddExploredChildMove:
         move = 3
         explored_child_move = 1
 
-        node = Node(mock_game, player, move)
+        node = MCTSNode(mock_game, player, move)
         node.add_explored_child_move(explored_child_move)
         assert node.explored_child_moves == { explored_child_move }
 
@@ -46,7 +46,7 @@ class TestNodeAddChildNode:
         move = 3
         child_node = "child node"
 
-        node = Node(mock_game, player, move)
+        node = MCTSNode(mock_game, player, move)
         node.add_child_node(child_node)
         assert node.child_nodes == {child_node}
 
@@ -59,7 +59,7 @@ class TestNodeCheckChildMoves:
         player = 1
         move = 3
 
-        node = Node(mock_game, player, move)
+        node = MCTSNode(mock_game, player, move)
         assert node.check_child_moves_to_explore() == {1, 3}
 
     def test_returns_an_empty_set_when_there_are_no_child_moves_to_explore(self):
@@ -70,14 +70,6 @@ class TestNodeCheckChildMoves:
         player = 1
         move = 3
 
-        node = Node(mock_game, player, move)
+        node = MCTSNode(mock_game, player, move)
         assert node.check_child_moves_to_explore() == set()
 
-class TestMCTS:
-    def test_runs_a_simulated_game(self):
-        mancala = MancalaBoard(6,6, [[4, 5, 4, 3, 2, 1], [4, 0, 3, 0, 16, 0], [3, 16]])
-        player_number = 1
-        time_limit_seconds = 5
-
-        mcts = MCTS(mancala, player_number, time_limit_seconds)
-        assert mcts.pick_pot() == 1
