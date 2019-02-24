@@ -4,12 +4,13 @@ import mcts
 from mancala_board import MancalaBoard
 
 class Player():
-    def __init__(self, player_number, player_type, mancala, maximum_depth = float("inf")):
+    def __init__(self, player_number, player_type, mancala, maximum_depth = float("inf"), maximum_time_secs = 2):
         self.player_number = player_number
         self.player_type = player_type
         self.opposite_player_number = self.get_opposite_player(self.player_number)
         self.mancala = mancala
         self.maximum_depth = maximum_depth
+        self.maximum_time_secs = maximum_time_secs
 
     def get_opposite_player(self, current_player):
         return 2 if current_player == 1 else 1
@@ -193,12 +194,10 @@ class Player():
             pot = self.pick_pot_with_extra_turn(False)
 
         if self.player_type == "mcts":
-            time_limit_seconds = 5
-            number_of_simulations = 10
-            monte_carlo = mcts.MCTS(self.mancala, self.player_number, time_limit_seconds, number_of_simulations)
+            monte_carlo = mcts.MCTS(self.mancala, self.player_number, self.maximum_time_secs, self.maximum_depth)
             pot = monte_carlo.pick_pot()
 
-        # print(f"Pot chosen for play: {pot}")
+        print(f"Pot chosen for play: {pot}")
 
         return self.mancala.play(self.player_number, pot)
 
