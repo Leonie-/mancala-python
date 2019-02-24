@@ -12,6 +12,8 @@ def init():
     first_player = 1
     # player_types = ["minimax", "alphabeta", "random", "rightpot", "leftpot", "potwithfewest", "potwithmost", "takeanotherturn", "avoidanotherturn", "mcts"]
     player_types = ["mcts"]
+    # player_types = ["mcts-expansion-no-extra-turn"]
+    # player_types = ["mcts_simulation_minimax"]
 
     for game_number in range(2):
         mancala_board = MancalaBoard(pots, stones, None, game_number)
