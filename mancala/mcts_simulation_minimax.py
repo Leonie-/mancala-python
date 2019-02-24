@@ -6,7 +6,7 @@ from mancala_board import MancalaBoard
 import player
 from game import Game
 
-class Node():
+class MCTSSimulationMiniMaxNode():
     def __init__(self, game_state, player=None, move=None, parent=None):
         self.game_state = game_state
         self.player = player
@@ -31,24 +31,23 @@ class Node():
     def add_child_node(self, child):
         self.child_nodes.add(child)
 
-class MCTS():
-    def __init__(self, mancala, player_number, time_limit_seconds, number_of_simulations=5, exploration_constant=1):
+class MCTSSimulationMiniMax():
+    def __init__(self, mancala, player_number, time_limit_seconds, number_of_simulations=5):
         self.mancala = mancala
         self.time_limit = time_limit_seconds
         self.number_of_simulations = number_of_simulations
-        self.exploration_constant = exploration_constant
         self.player = player_number
 
     def pick_pot(self):
         # Create root node (top of tree) with correct starting player set
-        root_node = Node(self.mancala, self.player)
+        root_node = MCTSSimulationMiniMaxNode(self.mancala, self.player)
 
         # Set a time limit
         time_limit = time.time() + self.time_limit / 1000
         while time.time() < time_limit:
             self.selection(root_node)
 
-        promising_child = self.get_most_promising_child_with_uct(root_node, self.exploration_constant)
+        promising_child = self.get_most_promising_child_with_uct(root_node)
         return promising_child.move
 
     def selection(self, node):
@@ -56,7 +55,7 @@ class MCTS():
         if not node.is_leaf:
             if node.is_fully_expanded:
                 # Drill down into the tree using UCT to select the most promising child node
-                promising_child = self.get_most_promising_child_with_uct(node, self.exploration_constant)
+                promising_child = self.get_most_promising_child_with_uct(node)
                 return self.selection(promising_child)
             else:
                 # Expand, simulate and backpropagate
@@ -93,19 +92,20 @@ class MCTS():
         # Switch players
         next_player = self.get_next_player(parent_node.player, extra_turn)
         # Add new node to the tree
-        return Node(mancala_board, next_player, move, parent_node)
+        return MCTSSimulationMiniMaxNode(mancala_board, next_player, move, parent_node)
 
     def get_next_player(self, current_player, extra_turn):
         if extra_turn is True:
             return current_player
         return 1 if current_player is 2 else 2
 
-    def run_simulation(self, board_state, player_number, max_depth=5):
+    def run_simulation(self, board_state, player_number, max_depth=2):
         mancala_board = MancalaBoard(6, 6, board_state)
+        # SIMULATION MODIFICATION ---------------------------------------
         simulated_game = Game(
             mancala_board,
-            player.Player(1, "random", mancala_board, max_depth),
-            player.Player(2, "random", mancala_board, max_depth)
+            player.Player(1, "alphabeta", mancala_board, max_depth),
+            player.Player(2, "alphabeta", mancala_board, max_depth)
         )
         # Run simulation and determine winner
         game_logs = simulated_game.play(player_number)
@@ -127,13 +127,14 @@ class MCTS():
             node.total_reward += reward
             node = node.parent_node
 
-    def get_most_promising_child_with_uct(self, node, exploration_value):
+    def get_most_promising_child_with_uct(self, node):
         best_value =  float("-inf")
         best_nodes = []
+        exploration_value = 1
         for child_node in node.child_nodes:
             # Upper confidence bounds for trees algorithm (UCT)
             value = child_node.total_reward / child_node.number_of_visits + \
-                    exploration_value * math.sqrt(2 * math.log(node.number_of_visits) / child_node.number_of_visits)
+                    exploration_value * math.sqrt(math.log(node.number_of_visits) / child_node.number_of_visits)
             if value >= best_value:
                 best_value = value
                 best_nodes.append(child_node)
