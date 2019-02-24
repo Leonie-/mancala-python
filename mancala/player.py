@@ -1,6 +1,8 @@
 import random
 
 import mcts
+from mcts_modified_expansion_no_extra_turn import MCTSNoExtraTurn
+from mcts_simulation_minimax import MCTSSimulationMiniMax
 from mancala_board import MancalaBoard
 
 class Player():
@@ -195,6 +197,14 @@ class Player():
 
         if self.player_type == "mcts":
             monte_carlo = mcts.MCTS(self.mancala, self.player_number, self.maximum_time_secs, self.maximum_depth)
+            pot = monte_carlo.pick_pot()
+
+        if self.player_type == "mcts-expansion-no-extra-turn":
+            monte_carlo = MCTSNoExtraTurn(self.mancala, self.player_number, self.maximum_time_secs, self.maximum_depth)
+            pot = monte_carlo.pick_pot()
+
+        if self.player_type == "mcts_simulation_minimax":
+            monte_carlo = MCTSSimulationMiniMax(self.mancala, self.player_number, self.maximum_time_secs, self.maximum_depth)
             pot = monte_carlo.pick_pot()
 
         print(f"Pot chosen for play: {pot}")
