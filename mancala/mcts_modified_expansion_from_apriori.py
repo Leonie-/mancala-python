@@ -6,7 +6,7 @@ from mancala_board import MancalaBoard
 import player
 from game import Game
 
-class MCTSNoExtraTurnNode():
+class MCTSModifiedFromAprioriNode():
     def __init__(self, game_state, player=None, move=None, parent=None, extra_turn=False):
         self.game_state = game_state
         self.player = player
@@ -32,7 +32,7 @@ class MCTSNoExtraTurnNode():
     def add_child_node(self, child):
         self.child_nodes.add(child)
 
-class MCTSNoExtraTurn():
+class MCTSModifiedFromApriori():
     def __init__(self, mancala, player_number, time_limit_seconds, number_of_simulations=5, exploration_constant=1):
         self.mancala = mancala
         self.time_limit = time_limit_seconds
@@ -42,14 +42,14 @@ class MCTSNoExtraTurn():
 
     def pick_pot(self):
         # Create root node (top of tree) with correct starting player set
-        root_node = MCTSNoExtraTurnNode(self.mancala, self.player)
+        root_node = MCTSModifiedFromAprioriNode(self.mancala, self.player)
 
         # Set a time limit
         time_limit = time.time() + self.time_limit / 1000
         while time.time() < time_limit:
             self.selection(root_node)
 
-        promising_child = self.get_most_promising_child_with_uct(root_node, self.exploration_constant)
+        promising_child = self.get_most_promising_child_with_uct(root_node)
         return promising_child.move
 
     def selection(self, node):
@@ -57,7 +57,7 @@ class MCTSNoExtraTurn():
         if not node.is_leaf:
             if node.is_fully_expanded:
                 # Drill down into the tree using UCT to select the most promising child node
-                promising_child = self.get_most_promising_child_with_uct(node, self.exploration_constant)
+                promising_child = self.get_most_promising_child_with_uct(node)
                 return self.selection(promising_child)
             else:
                 # Expand, simulate and backpropagate
@@ -94,7 +94,7 @@ class MCTSNoExtraTurn():
         # Switch players
         next_player = self.get_next_player(parent_node.player, extra_turn)
         # Add new node to the tree
-        return MCTSNoExtraTurnNode(mancala_board, next_player, move, parent_node, extra_turn)
+        return MCTSModifiedFromAprioriNode(mancala_board, next_player, move, parent_node, extra_turn)
 
     def get_next_player(self, current_player, extra_turn):
         if extra_turn is True:
@@ -129,7 +129,8 @@ class MCTSNoExtraTurn():
             node = node.parent_node
 
     # EXPANSION MODIFICATION ---------------------------------------
-    def get_exploration_value(self, node, exploration_value=1):
+    def get_exploration_value(self, node):
+        exploration_value = self.exploration_constant
         if node.extra_turn:
             exploration_value += 0.5
         if node.move is 1:
